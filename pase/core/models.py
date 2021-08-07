@@ -1,6 +1,11 @@
 from django.db import models
+from django.core.files import File
+from PIL import Image, ImageDraw
+import qrcode
+from io import BytesIO
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
+
 
 
 class AntecedentesPersonales(models.Model):
@@ -57,8 +62,8 @@ class ActividadGeneral(models.Model):
     descripcion = models.TextField(verbose_name="descripción / comentario")
 
     def __str__(self):
-        pass
-
+        return "actividades generales"
+    
     class Meta:
         verbose_name = "Actividad General"
         verbose_name_plural = "Actividades Generales"
@@ -114,7 +119,7 @@ class AntecedentesSanitarios(models.Model):
     )
 
     def __str__(self):
-        pass
+        return "antecedentes sanitarios"
 
     class Meta:
         verbose_name = "Antecedente Sanitario"
@@ -163,9 +168,23 @@ class Visita(models.Model):
         ActividadGeneral, on_delete=CASCADE, null=False, blank=False,
         verbose_name="actividades general", help_text="Eventos."
     )
-    def __str__(self):
-        pass
+    status_ingreso = models.BooleanField(default=True)
+    qr_code = models.ImageField(upload_to="qr_codes", blank=True)
 
+    def __str__(self):
+        return str('visita')
+
+    def save(self, *args, **kargs):
+        qrcode_img = qrcode.make(self.antecedente_personal.rut)
+        canvas = Image.new('RGB', (290, 290), "white")
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_img)
+        fname = f'qr_code-{self.antecedente_personal.rut}.pdf'
+        buffer = BytesIO()
+        canvas.save(buffer,'PDF')
+        self.qr_code.save(fname, File(buffer), save=False)
+        canvas.close()
+        super().save(*args, **kargs)
     class Meta:
         verbose_name = 'Visita'
         verbose_name_plural = 'Visitas'
