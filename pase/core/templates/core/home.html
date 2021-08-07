@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}Obtener permiso{% endblock %}
+{% block title %}Obtener permiso de acceso{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -18,22 +18,24 @@
                                 <div class="text-center">
                                     <h4 class="text-dark">Pase Seguro Unach</h4>
                                 </div>
-                                <div>
+                                <form class="user">
                                     <div style="margin-top: 50px;">
-                                    <button class="btn btn-primary btn-block text-white text-uppercase btn-user" type="submit">Estudiantes</button>
-                                    <button class="btn btn-primary btn-block text-white text-uppercase btn-user" type="submit">Visitantes</button>
-                                    <button class="btn btn-primary btn-block text-white btn-user" type="submit">Completar formulario</button>
-                                    <div class="text-center mt-3">
-                                        <div class="small">
-                                            Si tienes problemas para acceder al pase seguro, comunícate con tu director de carrera
+                                        <button class="btn btn-primary btn-block text-white text-uppercase btn-user" type="submit">Estudiantes</button>
+                                        <button class="btn btn-primary btn-block text-white text-uppercase btn-user" type="submit">Visitantes</button>
+                                        <button class="btn btn-primary btn-block text-white btn-user" type="submit">Completar formulario</button>
+                                        <div class="text-center mt-3">
+                                            <div class="small">
+                                                Si tienes problemas para acceder al pase seguro, comunícate con tu director de carrera
+                                            </div>
                                         </div>
+                                        <hr style="margin-top: 50px;">
+                                        <a class="btn btn-block text-white btn-user" style="background: var(--secondary);margin-top: 20px;" 
+                                            href="{% url 'safepass:check' %}">Verificar permiso</a>
                                     </div>
-                                    <hr style="margin-top: 50px;">
-                                    <a class="btn btn-block text-white btn-user" style="background: var(--secondary);margin-top: 20px;" href="#">Verificar permiso</a>
-                                </div>
-                                <div class="text-center mt-3">
-                                    <a class="small" href="{% url 'admin:index' %}">Usuario Registrado</a>
-                                </div>
+                                    <div class="text-center mt-3">
+                                        <a class="small" href="{% url 'admin:index' %}">Usuario Registrado</a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
