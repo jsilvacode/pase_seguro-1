@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 
 
@@ -147,3 +148,24 @@ class Estudiante(models.Model):
     class Meta:
         verbose_name = "Estudiante"
         verbose_name_plural = "Estudiantes"
+
+
+class Visita(models.Model):
+    antecedente_personal = models.ForeignKey(
+        AntecedentesPersonales, on_delete=models.CASCADE, null=False, blank=False,
+        verbose_name="antecedentes personales",
+    )
+    antecedente_sanitario = models.ForeignKey(
+        AntecedentesSanitarios, on_delete=CASCADE, null=False, blank=False, 
+        verbose_name="antecedentes sanitarios",
+    )
+    actividad_general = models.ForeignKey(
+        ActividadGeneral, on_delete=CASCADE, null=False, blank=False,
+        verbose_name="actividades general", help_text="Eventos."
+    )
+    def __str__(self):
+        pass
+
+    class Meta:
+        verbose_name = 'Visita'
+        verbose_name_plural = 'Visitas'

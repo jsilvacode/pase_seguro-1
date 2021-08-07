@@ -4,7 +4,7 @@ from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from .models import (AntecedentesAcademicos, ActividadAcademica,
                      ActividadGeneral, AntecedentesPersonales, AntecedentesSanitarios,
-                     Estudiante
+                     Estudiante, Visita
                     )
 
 
@@ -23,3 +23,4 @@ admin.site.register(ActividadGeneral)
 admin.site.register(AntecedentesPersonales)
 admin.site.register(AntecedentesSanitarios)
 admin.site.register(Estudiante)
+admin.site.register(Visita)
