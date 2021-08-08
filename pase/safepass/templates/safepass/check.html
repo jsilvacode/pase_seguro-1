@@ -27,7 +27,8 @@
                                         <input class="form-control form-control-user" type="text"  placeholder="Ingresar id del permiso" autocomplete="off" name="rut" required="">
                                     </div>
                                     <hr style="margin-top: 50px;">
-                                    <button class="btn btn-primary btn-block text-white btn-user" type="submit">Revisar</button>
+                                    <a class="btn btn-primary btn-block text-white btn-user" type="submit"
+                                        href="{% url 'safepass:check_form' %}">Revisar</a>
                                 </form>
                             </div>
                         </div>

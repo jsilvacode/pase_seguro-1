@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}Formulario estudiantes{% endblock %} 
+{% block title %}Formulario visitantes{% endblock %} 
 
 {% block content %}
 <div id="wrapper">
@@ -23,29 +23,29 @@
                                                 <div class="form-row mb-3">
                                                     <div class="col">
                                                         <label for="name" style="width: 100%;"><strong>Nombres</strong></label>
-                                                        <input value="{{ personal_info.nombres }}" class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="" name="name">
+                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="" name="name">
                                                     </div>
                                                 </div>
                                                 <div class="form-row mb-3">
                                                     <div class="col">
                                                         <label for="last_name" style="width: 100%;"><strong>Apellidos</strong></label>
-                                                        <input value="{{ personal_info.apellidos }}" class="form-control form-control form-control-user" type="text" style="width: 100%;" name="last_name" readonly="">
+                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" name="last_name" readonly="">
                                                     </div>
                                                 </div>
                                                 <div class="form-row mb-3">
                                                     <div class="col">
                                                         <label for="username" style="width: 100%;"><strong>RUT</strong></label>
-                                                        <input value="{{ personal_info.rut }}" class="form-control form-control form-control-user" type="text" style="width: 100%;" name="rut" readonly="">
+                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" name="rut" readonly="">
                                                     </div>
                                                 </div>
                                                 <div class="form-row mb-3">
                                                     <div class="col-sm-12 col-md-6">
                                                         <label for="email" style="width: 100%;"><strong>Correo</strong><br></label>
-                                                        <input value="{{ personal_info.email }}" class="form-control form-control form-control-user" type="email" name="email" readonly="">
+                                                        <input value=" " class="form-control form-control form-control-user" type="email" name="email" readonly="">
                                                     </div>
                                                     <div class="col">
                                                         <label for="telephone" style="width: 100%;"><strong>Teléfono</strong><br></label>
-                                                        <input value="{{ personal_info.telefono }}" class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="">
+                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,12 +74,12 @@
                                 <div class="col">
                                     <div class="card shadow mb-3">
                                         <div class="card-header py-3">
-                                            <p class="text-primary m-0 font-weight-bold">Eventos Académicos</p>
+                                            <p class="text-primary m-0 font-weight-bold">Actividades generales</p>
                                         </div>
                                         <div class="card-body">
                                             <div class="container-fluid">
                                                 <div class="form-row mb-3">
-                                                    <p class="lead">Lista de eventos</p>
+                                                    <p class="lead">Lista de actividades</p>
                                                 </div>
                                             </div>
                                         </div>

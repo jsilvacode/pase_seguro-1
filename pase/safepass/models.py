@@ -6,7 +6,6 @@ from io import BytesIO
 from django.db.models.deletion import CASCADE
 
 
-
 class AntecedentesPersonales(models.Model):
     rut = models.CharField(max_length=12, unique=True, verbose_name="RUT")
     nombres = models.CharField(max_length=200)
@@ -32,7 +31,7 @@ class AntecedentesAcademicos(models.Model):
     class Meta:
         verbose_name = "Antecedente Académico"
         verbose_name_plural = "Antecedentes Académicos"
-
+        ordering = ['facultad', 'carrera']
 
 class ActividadAcademica(models.Model):
     fecha = models.DateField()
@@ -156,7 +155,7 @@ class Estudiante(models.Model):
 
 class Visita(models.Model):
     antecedente_personal = models.ForeignKey(
-        AntecedentesPersonales, on_delete=models.CASCADE, null=False, blank=False,
+        AntecedentesPersonales, on_delete=CASCADE, null=False, blank=False,
         verbose_name="antecedentes personales",
     )
     antecedente_sanitario = models.ForeignKey(

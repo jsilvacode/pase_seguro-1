@@ -1,0 +1,206 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Verificación{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-12 col-xl-10">
+            <div class="card shadow-lg o-hidden border-0 my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 d-flex" style="min-height: 190px;">
+                            <div class="flex-grow-1 bg-password-image bg-gradient-primary" style="background: url(&quot;{% static 'core/img/logos/unach.png' %}&quot;) center / contain no-repeat;"></div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <a class="btn btn-link" role="button" style="margin-bottom: 12px;" href="{% url 'core:home' %}">
+                                    <i class="fa fa-arrow-circle-left" style="margin-right: 10px;"></i>
+                                    Volver
+                                </a>
+                                <div class="text-center">
+                                    <h4 class="text-dark">Pase Seguro Unach</h4>
+                                    <small class="form-text text-muted" style="margin-top: 30px;">Introduzca su RUT sin puntos ni guión</small>
+                                </div>
+                                <form class="user" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input class="form-control form-control-user" type="text"  placeholder="Ingresar id del permiso" autocomplete="off" name="rut"
+                                            {% if rut %}value="{{ rut }}"{% endif %} required="">
+                                    </div>
+                                    {% if error %}
+                                        <small class="form-text text-danger" style="margin: 0;margin-bottom: 10px;">
+                                            * El rut {{ rut }} no registra permisos
+                                        </small>
+                                    {% endif %}
+                                    <button class="btn btn-primary btn-block text-white btn-user" type="submit">Revisar</button>
+                                    {% if object and not object.logged_out %}
+                                        <a class="btn btn-info btn-block btn-user" href="#">Marcar salida</a>
+                                    {% endif %}
+                                </form>
+                                {% if object %}
+                                    {% if object.logged_out %}
+                                        <div class="alert alert-danger" style="margin-top: 15px;" role="alert">
+                                            Salida marcada con anterioridad
+                                            <br><br>
+                                            Valida para el {{ object.activity_starting_time|date:"d \d\e F \d\e\l Y" }} desde las {{ object.activity_starting_time|date:"H:i" }} hasta las {{ object.activity_ending_time|date:"H:i" }} hrs
+                                        </div>
+                                    {% else %}
+                                        <a class="btn btn-link text-uppercase text-center text-success" role="button" style="margin-bottom: 12px;margin-top: 15px;" href="#pdf-container">
+                                            <i class="fa fa-arrow-circle-down" style="margin-right: 10px;"></i>
+                                            <br>
+                                            Aceptación de terminos encontrada<br>valida para el {{ object.activity_starting_time|date:"d \d\e F \d\e\l Y" }} desde las {{ object.activity_starting_time|date:"H:i" }} hasta las {{ object.activity_ending_time|date:"H:i" }} hrs
+                                            <br><br>
+                                            {% if object.activities_time == 'morning' %}
+                                                Ultima hora para hacer retiro del campus: 
+                                                13:30 hrs
+                                            {% elif object.activities_time == 'afternoon' %}
+                                                Permiso valido desde las 14:10 hrs
+                                            {% endif %}
+                                        </a>
+                                        <div class="d-flex justify-content-center mt-3"><img class="img-thumbnail img-fluid" src="{{ MEDIA_URL }}{{ object.qr_code.url }}" style="max-width: 150px;max-height: 150px;"></div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow-lg o-hidden border-0 my-5">
+                <div class="card-body p-0 container" id="pdf-container">
+                    <div class="row justify-content-center">
+                        <div class="col-auto d-flex" style="margin: 10px;">
+                            <a class="btn btn-primary mx-1" target="_blank" href="{% url 'safepass:permission-pdf' %}"><i class="fa fa-file-pdf-o" style="margin-right: 10px;"></i>Descargar permiso (PDF)</a>
+                            <a class="btn btn-primary mx-1" target="_blank" href="{{ MEDIA_URL }}{{ object.statement_of_responsibilities.url }}"><i class="fa fa-file-pdf-o" style="margin-right: 10px;"></i>Declaración de consentimiento y responsabilidad</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow mb-3">
+                                <div class="card-header py-3">
+                                    <p class="text-primary m-0 font-weight-bold">Información del Estudiante</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="container-fluid">
+                                        <div class="row mb-3">
+                                            <div class="col"><label for="name" style="width: 100%;"><strong>Nombres</strong></label><input type="text" class="form-control form-control-user" style="width: 100%;" readonly="" name="name" value="{{ object.name }}"></div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col"><label for="last_name" style="width: 100%;"><strong>Apellidos</strong></label><input type="text" class="form-control form-control-user" style="width: 100%;" name="last_name" readonly="" value="{{ object.last_name }}"></div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col"><label for="rut" style="width: 100%;"><strong>RUT</strong></label><input type="text" class="form-control form-control-user" style="width: 100%;" name="rut" readonly="" value="{{ object.rut }}"></div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-12 col-md-6"><label for="email" style="width: 100%;"><strong>Correo</strong><br></label><input type="email" class="form-control form-control-user" name="email" readonly="" {% if object.email %}value="{{ object.email }}"{% endif %}></div>
+                                            <div class="col"><label for="telephone" style="width: 100%;"><strong>Teléfono</strong><br></label><input type="text" class="form-control form-control-user" style="width: 100%;" name="telephone" readonly="" {% if object.telephone %}value="{{ object.telephone }}"{% endif %}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow mb-3">
+                                <div class="card-header py-3">
+                                    <p class="text-primary m-0 font-weight-bold">Antecedentes Académicos</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="container-fluid">
+                                        <div class="row mb-3">
+                                            <div class="col-sm-12 col-md-6"><label for="faculty" style="width: 100%;"><strong>Facultad</strong><br></label><input type="text" class="form-control form-control-user" style="width: 100%;" readonly="" name="faculty" value="{{ object.faculty }}"></div>
+                                            <div class="col"><label for="career" style="width: 100%;"><strong>Carrrera</strong><br></label><input type="text" class="form-control form-control-user" style="width: 100%;" readonly="" name="career" value="{{ object.career }}"></div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-12">
+                                                <label for="activity_type_reference" style="width: 100%;"><strong>Actividades</strong><br></label>
+                                                {% for activity in object.activities_reference.all %}
+                                                    {% if activity.course %}"{{ activity.course }}"{% endif %} {{ activity.name }} de {{ activity.date_time | time }} a {{ activity.ending_time | time }} horas en sala {{ activity.class_room }}
+                                                    <br>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container-fluid">
+                                        <div class="row mb-3">
+                                            <div class="col-sm-12"><label class="col-form-label" for="signature"><strong>Observaciones&nbsp;/ Comentarios</strong><br></label></div>
+                                            <div class="col"><textarea rows="4" style="width: 100%;" name="comments" readonly="">{{ object.comments }}</textarea></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow">
+                                <div class="card-header py-3">
+                                    <p class="text-primary m-0 font-weight-bold">Antecedentes de Salud</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="row mb-4">
+                                                    <div class="col"><label class="col-form-label" style="width: 100%;" for="contact_has_been_made">¿Ha tenido contacto con una persona enferma de coronavirus (Covid-19) durante los últimos 14 días?<br></label></div>
+                                                    <div class="col">
+                                                    {% for key, human in object.CONTACT_HAS_BEEN_MADE_CHOICES %}
+                                                        <div class="form-check"><input class="form-check-input" type="radio" id="formRadio-contact-{{ key }}" name="contact_has_been_made" value="{{ key }}" disabled="" {% if key|slugify == object.contact_has_been_made|slugify %} checked {% endif %} required=""><label class="form-check-label" for="formRadio-contact-{{ key }}">{{ human }}</label></div>
+                                                    {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-12 col-md-6" style="margin-bottom: 16px;">
+                                                        <label style="width: 100%;"><strong>¿Ha presentado alguno de estos síntomas cardinales?</strong></label>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-14" disabled="" name="symptom_fever" {% if object.symptom_fever %}checked{% endif %}><label class="form-check-label" for="formCheck-14">Tos</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-15" disabled="" name="symptom_loss_of_smell" {% if object.symptom_loss_of_smell %}checked{% endif %}><label class="form-check-label" for="formCheck-15">Disnea o dificultad respiratoria</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-16" disabled="" name="symptom_loss_of_taste" {% if object.symptom_loss_of_taste %}checked{% endif %}><label class="form-check-label" for="formCheck-16">Congestión nasal</label></div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label style="width: 100%;"><strong>¿Ha presentado alguno de estos síntomas no cardinales?</strong></label>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" disabled="" name="symptom_cough" {% if object.symptom_cough %}checked{% endif %}><label class="form-check-label" for="formCheck-2">Tos</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" disabled="" name="symptom_respiratory_distress" {% if object.symptom_respiratory_distress %}checked{% endif %}><label class="form-check-label" for="formCheck-3">Disnea o dificultad respiratoria</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" disabled="" name="symptom_nasal_secretions" {% if object.symptom_nasal_secretions %}checked{% endif %}><label class="form-check-label" for="formCheck-4">Congestión nasal</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-5" disabled="" name="symptom_increased_respiratory_rate" {% if object.symptom_increased_respiratory_rate %}checked{% endif %}><label class="form-check-label" for="formCheck-5">Aumento de la frecuencia respiratoria</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" disabled="" name="symptom_sore_throat" {% if object.symptom_sore_throat %}checked{% endif %}><label class="form-check-label" for="formCheck-6">Dolor de garganta</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7" disabled="" name="symptom_muscle_pain" {% if object.symptom_muscle_pain %}checked{% endif %}><label class="form-check-label" for="formCheck-7">Dolor muscular</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" disabled="" name="symptom_fatigue" {% if object.symptom_fatigue %}checked{% endif %}><label class="form-check-label" for="formCheck-8">Fatiga</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-9" disabled="" name="symptom_chest_pain" {% if object.symptom_chest_pain %}checked{% endif %}><label class="form-check-label" for="formCheck-9">Escalofríos</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-10" disabled="" name="symptom_shaking_chills" {% if object.symptom_shaking_chills %}checked{% endif %}><label class="form-check-label" for="formCheck-10">Dolor torácico</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-11" disabled="" name="symptom_headache" {% if object.symptom_headache %}checked{% endif %}><label class="form-check-label" for="formCheck-11">Dolor de cabeza</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-12" disabled="" name="symptom_diarrhea" {% if object.symptom_diarrhea %}checked{% endif %}><label class="form-check-label" for="formCheck-12">Diarrea</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-13" disabled="" name="symptom_nausea_vomiting" {% if object.symptom_nausea_vomiting %}checked{% endif %}><label class="form-check-label" for="formCheck-13">Náuseas/vómito</label></div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="d-flex flex-column flex-lg-row" style="margin-top: 16px;"><span class="text-nowrap d-flex flex-fill align-items-xl-center" style="margin-right: 10px;">Otros síntomas<br></span><input class="form-control d-flex align-self-center form-control form-control-user" type="text" name="symptom_other" readonly="" value="{{ object.symptom_other }}"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6 mt-5 mt-lg-0">
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-12"><label for="autoimmune_disease" style="width: 100%;">¿Padece alguna enfermedad autoinmune? ¿Cuál?<br></label><input type="text" class="form-control form-control-user" style="width: 100%;" name="autoimmune_disease" readonly="" value="{{ object.autoimmune_disease }}"></div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-12"><label for="chronic_disease" style="width: 100%;">¿Padece alguna enfermedad crónica?&nbsp;¿Cuál?<br></label><input type="text" class="form-control form-control-user" style="width: 100%;" name="chronic_disease" readonly="" value="{{ object.chronic_disease }}"></div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-12"><label for="is_pregnant" style="width: 100%;">Si es mujer, ¿Está embarazada?<br></label>
+                                                    {% for key, human in object.IS_PREGNANT_CHOICES %}
+                                                        <div class="form-check"><input class="form-check-input" type="radio" id="formRadio-pregnancy-{{ key }}" value="{{ key }}" name="is_pregnant" disabled="" {% if key|slugify == object.is_pregnant|slugify %} checked {% endif %}><label class="form-check-label" for="formRadio-pregnancy-{{ key }}">{{ human }}</label></div>
+                                                    {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
