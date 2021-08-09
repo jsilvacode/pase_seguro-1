@@ -23,7 +23,7 @@
                                                 <div class="form-row mb-3">
                                                     <div class="col">
                                                         <label for="name" style="width: 100%;"><strong>Nombres</strong></label>
-                                                        <input value="{{ personal_info.nombres }}" class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="" name="name">
+                                                        <input value="{{ personal.nombres }}" class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="" name="name">
                                                     </div>
                                                 </div>
                                                 <div class="form-row mb-3">
@@ -111,23 +111,23 @@
                                                             <div class="col-sm-12 col-md-6" style="margin-bottom: 16px;">
                                                                 <label style="width: 100%;"><strong>¿Ha presentado alguno de estos síntomas cardinales?</strong></label>
                                                                 <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-14" name="symptom_fever" checked><label class="form-check-label" for="formCheck-14">Tos</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-15" name="symptom_loss_of_smell" checked><label class="form-check-label" for="formCheck-15">Disnea o dificultad respiratoria</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-16" name="symptom_loss_of_taste" checked><label class="form-check-label" for="formCheck-16">Congestión nasal</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-15" name="symptom_loss_of_smell"><label class="form-check-label" for="formCheck-15">Disnea o dificultad respiratoria</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-16" name="symptom_loss_of_taste"><label class="form-check-label" for="formCheck-16">Congestión nasal</label></div>
                                                             </div>
                                                             <div class="col">
                                                                 <label style="width: 100%;"><strong>¿Ha presentado alguno de estos síntomas no cardinales?</strong></label>
                                                                 <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" name="symptom_cough" checked><label class="form-check-label" for="formCheck-2">Tos</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" name="symptom_respiratory_distress" checked><label class="form-check-label" for="formCheck-3">Disnea o dificultad respiratoria</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" name="symptom_nasal_secretions" checked><label class="form-check-label" for="formCheck-4">Congestión nasal</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-5" name="symptom_increased_respiratory_rate" checked><label class="form-check-label" for="formCheck-5">Aumento de la frecuencia respiratoria</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" name="symptom_sore_throat" checked><label class="form-check-label" for="formCheck-6">Dolor de garganta</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7" name="symptom_muscle_pain" checked><label class="form-check-label" for="formCheck-7">Dolor muscular</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" name="symptom_fatigue" checked><label class="form-check-label" for="formCheck-8">Fatiga</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-9" name="symptom_chest_pain" checked><label class="form-check-label" for="formCheck-9">Escalofríos</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-10" name="symptom_shaking_chills" checked><label class="form-check-label" for="formCheck-10">Dolor torácico</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-11" name="symptom_headache" checked><label class="form-check-label" for="formCheck-11">Dolor de cabeza</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-12" name="symptom_diarrhea" checked><label class="form-check-label" for="formCheck-12">Diarrea</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-13" name="symptom_nausea_vomiting" checked><label class="form-check-label" for="formCheck-13">Náuseas/vómito</label></div>  
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" name="symptom_respiratory_distress"><label class="form-check-label" for="formCheck-3">Disnea o dificultad respiratoria</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" name="symptom_nasal_secretions"><label class="form-check-label" for="formCheck-4">Congestión nasal</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-5" name="symptom_increased_respiratory_rate"><label class="form-check-label" for="formCheck-5">Aumento de la frecuencia respiratoria</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" name="symptom_sore_throat"><label class="form-check-label" for="formCheck-6">Dolor de garganta</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7" name="symptom_muscle_pain"><label class="form-check-label" for="formCheck-7">Dolor muscular</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" name="symptom_fatigue"><label class="form-check-label" for="formCheck-8">Fatiga</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-9" name="symptom_chest_pain"><label class="form-check-label" for="formCheck-9">Escalofríos</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-10" name="symptom_shaking_chills"><label class="form-check-label" for="formCheck-10">Dolor torácico</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-11" name="symptom_headache"><label class="form-check-label" for="formCheck-11">Dolor de cabeza</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-12" name="symptom_diarrhea"><label class="form-check-label" for="formCheck-12">Diarrea</label></div>
+                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-13" name="symptom_nausea_vomiting"><label class="form-check-label" for="formCheck-13">Náuseas/vómito</label></div>  
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="d-flex flex-column flex-lg-row" style="margin-top: 16px;">
@@ -176,7 +176,8 @@
                                             <div class="container-fluid">
                                                 <div class="form-row mb-3">
                                                     <div class="col-12">
-                                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" name="confirm_declaration" required="">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" id="formCheck-1" name="confirm_declaration" checked required="">
                                                             <label class="form-check-label" for="formCheck-1">
                                                                 <em>DECLARO QUE NO SOY UN CASO ACTIVO CONFIRMADO DE COVID-19, TAMPOCO CALIFICO COMO CASO SOSPECHOSO NI PROBABLE, DE ACUERDO A LO ESTABLECIDO EN LA NORMA SANITARIA, 
                                                                     COMO LO REFIERE EL TÍTULO VI, Nº3, LETRAS a), b), c) y d) DE ESTE PROTOCOLO, POR LO QUE ESTOY EN CONDICIONES DE SALUD ÓPTIMAS Y ADECUADAS PARA INGRESAR A LAS ACTIVIDADES DE PRÁCTICA PROFESIONAL Y/O ACTIVIDADES CURRICULARES PRESENCIALES EN EL CAMPUS, 

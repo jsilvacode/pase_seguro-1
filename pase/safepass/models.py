@@ -134,7 +134,7 @@ class Estudiante(models.Model):
         verbose_name="antecedentes académicos"),
     actividad_academica = models.ForeignKey(
         ActividadAcademica, on_delete=CASCADE, null=False, blank=False,
-        verbose_name="actividades académicas", help_text="Eventos."
+        verbose_name="actividades académicas", help_text="Actividades Acádemicas (eventos)."
     )
     antecedente_sanitario = models.ForeignKey(
         AntecedentesSanitarios, on_delete=CASCADE, null=False, blank=False, 
@@ -164,7 +164,7 @@ class Visita(models.Model):
     )
     actividad_general = models.ForeignKey(
         ActividadGeneral, on_delete=CASCADE, null=False, blank=False,
-        verbose_name="actividades general", help_text="Eventos."
+        verbose_name="actividades general", help_text="Actividades Generales (eventos)."
     )
     status_ingreso = models.BooleanField(default=True)
     qr_code = models.ImageField(upload_to="qr_codes", blank=True)
