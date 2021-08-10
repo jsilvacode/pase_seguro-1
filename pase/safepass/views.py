@@ -1,8 +1,7 @@
 from django.http.response import Http404
 from django.shortcuts import render
-from .models import AntecedentesPersonales, ActividadAcademica, Visita
-from datetime import date
-
+from .forms import (PerfilForm, EducacionForm, DeclaracionForm)
+from .models import AntecedentesPersonales, Visita
 
 
 def check(request):
@@ -27,19 +26,31 @@ def check_form(request):
     return render(request, "safepass/check_form.html", {'personal_fields': personal_fields})
 
 
-
 def students_form(request):
-    today = date.today()
-    all = ActividadAcademica.objects.all()
-    for x in all:
-        if x.fecha > today:
-            print(x.fecha)
-            print(x.hora_inicio)
-            print(x.aula)
-            print(x.docente)
-
-    contexto = {}
-    return render(request, "safepass/students.html",{"contexto":contexto})
+    if request.method == "POST":
+        profile_form = PerfilForm(request.POST)
+        if profile_form .is_valid():
+                data = profile_form.save(commit=False)
+                data.save()
+    if request.method == "POST":
+        education_form = EducacionForm(request.POST)
+        if education_form .is_valid():
+                data = education_form.save(commit=False)
+                data.save()
+    if request.method == "POST":
+        statement_form = DeclaracionForm(request.POST, request.FILES)
+        if profile_form.is_valid():
+                data = statement_form.save(commit=False)
+                data.save()
+    
+    profile_form = PerfilForm()
+    education_form = EducacionForm()
+    statement_form = DeclaracionForm()
+    # ----
+    return render(request, "safepass/students.html", {
+        'profile_form': profile_form, 'education_form': education_form, 
+        'statement_form': statement_form
+    })
 
 
 def visitors_form(request):
