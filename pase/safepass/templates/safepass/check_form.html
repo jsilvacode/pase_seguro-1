@@ -57,6 +57,7 @@
                             <a class="btn btn-primary mx-1" target="_blank" href="#"><i class="fa fa-file-pdf-o" style="margin-right: 10px;"></i>Declaración de consentimiento y responsabilidad</a>
                         </div>
                     </div>
+                    {% for project in personal_fields %}
                     <div class="row">
                         <div class="col-12">
                             <div class="card shadow mb-3">
@@ -68,28 +69,28 @@
                                         <div class="row mb-3">
                                             <div class="col">
                                                 <label for="name" style="width: 100%;"><strong>Nombres</strong></label>
-                                                <input type="text" class="form-control form-control-user" style="width: 100%;" readonly="" name="name" value="">
+                                                <h2 class="section-heading title">{{project.antecedente_personal.nombres}}</h2>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
                                                 <label for="last_name" style="width: 100%;"><strong>Apellidos</strong></label>
-                                                <input type="text" class="form-control form-control-user" style="width: 100%;" name="last_name" readonly="" value="">
+                                                <h2 class="section-heading title">{{project.antecedente_personal.apellidos}}</h2>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
                                                 <label for="rut" style="width: 100%;"><strong>RUT</strong></label>
-                                                <input type="text" class="form-control form-control-user" style="width: 100%;" name="rut" readonly="" value=""></div>
+                                                <h2 class="section-heading title">{{project.antecedente_personal.rut}}</h2>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-12 col-md-6">
                                                 <label for="email" style="width: 100%;"><strong>Correo</strong><br></label>
-                                                <input type="email" class="form-control form-control-user" name="email" readonly="" value="">
+                                                <h2 class="section-heading title">{{project.antecedente_personal.email}}</h2>
                                             </div>
                                             <div class="col">
                                                 <label for="telephone" style="width: 100%;"><strong>Teléfono</strong><br></label>
-                                                <input type="text" class="form-control form-control-user" style="width: 100%;" name="telephone" readonly="" value="">
+                                                <h2 class="section-heading title">{{project.antecedente_personal.telefono}}</h2>
                                             </div>
                                         </div>
                                     </div>
@@ -106,10 +107,10 @@
                                         <div class="row mb-3">
                                             <div class="col-sm-12 col-md-6">
                                                 <label for="faculty" style="width: 100%;"><strong>Facultad</strong><br></label>
-                                                <input type="text" class="form-control form-control-user" style="width: 100%;" readonly="" name="faculty" value=""></div>
+                                                <h2 class="section-heading title">{{project.antecedente_personal.telefono}}</h2>
                                             <div class="col">
                                                 <label for="career" style="width: 100%;"><strong>Carrrera</strong><br></label>
-                                                <input type="text" class="form-control form-control-user" style="width: 100%;" readonly="" name="career" value=""></div>
+                                                <h2 class="section-heading title">{{project.antecedente_personal.telefono}}</h2>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-12">
@@ -202,6 +203,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
