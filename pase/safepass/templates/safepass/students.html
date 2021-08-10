@@ -85,6 +85,32 @@
                                             <div class="container-fluid">
                                                 <div class="form-row mb-3">
                                                     <p class="lead">Lista de eventos</p>
+                                                    {% comment %} {% for activity in activity_form %} {% endcomment %}
+                                                   <div class="form-row mb-3">
+                                                        <div class="col">
+                                                            {{ activity_form }}
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    {% comment %} {% endfor %} {% endcomment %}
+                                                    {% comment %}
+                                                        {% for actividad  in actividades %}
+                                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="{{ current_name }}">
+                                                        <div class="col">
+                                                            {{ actividad.docente }}
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ actividad.fecha }}
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ actividad.aula }}
+                                                        </div>
+                                                        {% endfor %}
+                                                     <form action="/your-name/" method="post">
+                                                        <label for="your_name">Your name: </label>
+                                                        <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+                                                        <input type="submit" value="OK">
+                                                    </form> {% endcomment %}
                                                 </div>
                                             </div>
                                         </div>

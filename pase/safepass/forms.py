@@ -1,6 +1,6 @@
 from django import forms
 from .models import (AntecedentesPersonales, AntecedentesAcademicos, 
-                     AntecedentesSanitarios)
+                     AntecedentesSanitarios, ActividadAcademica)
 
 
 class PerfilForm(forms.ModelForm):
@@ -85,4 +85,19 @@ class DeclaracionForm(forms.ModelForm):
             'sintoma_otro': forms.TextInput(attrs={'class': 'form-control'}),
             'declaracion_confirmar': forms.CheckboxInput(),
             'declaracion_archivo': forms.FileInput(attrs={'required': True}),
+        }    
+
+
+class ActividadAcademicaForm(forms.Form):
+    eventos = forms.ModelMultipleChoiceField(queryset=None)
+    widgets = {
+            'eventos': forms.TextInput(
+                attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['eventos'].queryset = ActividadAcademica.objects.all()
+    
+    class Meta:
+        model = AntecedentesAcademicos
