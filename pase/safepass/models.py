@@ -8,8 +8,8 @@ from django.db.models.deletion import CASCADE
 
 class AntecedentesPersonales(models.Model):
     rut = models.CharField(max_length=12, unique=True, verbose_name="RUT")
-    nombres = models.CharField(max_length=200)
-    apellidos = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200, verbose_name="nombres")
+    apellido = models.CharField(max_length=200, verbose_name="apellidos")
     email = models.EmailField(max_length=100, verbose_name="correo electrónico")
     telefono = models.CharField(max_length=20, verbose_name="teléfono fijo / celular")
     
@@ -42,7 +42,8 @@ class ActividadAcademica(models.Model):
     docente = models.CharField(max_length=200)
     facultad_carrera = models.ManyToManyField(
         AntecedentesAcademicos, related_name="get_faculty_career",
-        verbose_name="facultad / carrera")
+        verbose_name="facultad / carrera"
+    )
 
     class Meta:
         verbose_name = "Actividad Académica"
@@ -74,14 +75,6 @@ class AntecedentesSanitarios(models.Model):
         max_length=10, choices=CONTACTO_ESTRECHO_OPCIONES, help_text="¿Ha tenido?."
     )
 
-    # Antecedentes de salud I
-    enfermedad_autoinmune = models.CharField(
-        max_length=100, blank=True, verbose_name="enfermedad autoinmune"
-    )
-    enfermedad_cronica = models.CharField(
-        max_length=100, blank=True, verbose_name="enfermedad crónica"
-    )
-
     # Síntomas cardinales
     sintoma_fiebre = models.BooleanField(verbose_name="fiebre")
     sintoma_perdida_olfato = models.BooleanField(verbose_name="pérdida del olfato")
@@ -106,14 +99,13 @@ class AntecedentesSanitarios(models.Model):
     # Otros 
     sintoma_otro = models.CharField(max_length=200, blank=True, verbose_name="otros síntomas")
 
-    # Antecedentes de salud II
-    EMBARAZADA_OPCIONES = (('sí', 'Si'), ('no', 'No'))
-    embarazo = models.CharField(
-        max_length=10, blank=True, choices=EMBARAZADA_OPCIONES, help_text="¿Está?."
-    )
     declaracion_confirmar = models.BooleanField(
         default=False, verbose_name="declaración de salud idónea", 
         help_text="Aceptar."
+    )
+    declaracion_archivo = models.FileField(
+        upload_to='uploads/statements/%Y/%m/%d/', blank=True, 
+        verbose_name="declaración de responsabilidad", help_text="Doc adjunto."
     )
 
     def __str__(self):
@@ -131,7 +123,8 @@ class Estudiante(models.Model):
     )
     antecedente_academico = models.ForeignKey(
         AntecedentesAcademicos, on_delete=CASCADE, null=False, blank=False, 
-        verbose_name="antecedentes académicos"),
+        verbose_name="antecedentes académicos"
+    )
     actividad_academica = models.ForeignKey(
         ActividadAcademica, on_delete=CASCADE, null=False, blank=False,
         verbose_name="actividades académicas", help_text="Actividades Acádemicas (eventos)."
@@ -140,13 +133,9 @@ class Estudiante(models.Model):
         AntecedentesSanitarios, on_delete=CASCADE, null=False, blank=False, 
         verbose_name="antecedentes sanitarios",
     )
-    declaracion_archivo = models.FileField(
-        upload_to='uploads/responsibilities/%Y/%m/%d/', blank=True, 
-        verbose_name="declaración de responsabilidad", help_text="Doc adjunto."
-    )
 
     def __str__(self):
-        return '{}'.format(self.antecedente_personal)
+        return self.rut.rut
 
     class Meta:
         verbose_name = "Estudiante"
@@ -164,7 +153,7 @@ class Visita(models.Model):
     )
     actividad_general = models.ForeignKey(
         ActividadGeneral, on_delete=CASCADE, null=False, blank=False,
-        verbose_name="actividades general", help_text="Actividades Generales (eventos)."
+        verbose_name="actividades generales", help_text="Actividades Generales (eventos)."
     )
     status_ingreso = models.BooleanField(default=True)
     qr_code = models.ImageField(upload_to="qr_codes", blank=True)
@@ -183,6 +172,7 @@ class Visita(models.Model):
         self.qr_code.save(fname, File(buffer), save=False)
         canvas.close()
         super().save(*args, **kargs)
+
     class Meta:
-        verbose_name = 'Visita'
-        verbose_name_plural = 'Visitas'
+        verbose_name = "Visita"
+        verbose_name_plural = "Visitas"
