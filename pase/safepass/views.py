@@ -25,28 +25,46 @@ def check_form(request):
         raise Http404("Estudiante no registrado")
     return render(request, "safepass/check_form.html")#, {'personal_fields': personal_fields})
 
-def busqueda_sintomas(request):
-    pass
+def busqueda_sintomas_no_cardinales(request):
 
+    lista_de_sintomas = [
+        'contacto_estrecho', 'sintoma_tos', 'sintoma_dolor_garganta', 'sintoma_secrecion_nasal',
+        'sintoma_respiratorio', 'sintoma_aumento_frecuencia', 'sintoma_dolor_toracico',
+        'sintoma_dolor_muscular', 'sintoma_dolor_cabeza', 'sintoma_fatiga', 'sintoma_escalofrios',
+        'sintoma_diarrea', 'sintoma_nausea_vomitos']
+    lista = []
+    for x in lista_de_sintomas:
+        a = request.POST.get(x)
+        if a:
+            lista.append(a)
+    if len(lista) <= 2:
+        return False 
+    else:
+        return True
 
+def busqueda_sintomas_cardinales(request):
+
+    lista_de_sintomas = ['sintoma_fiebre','sintoma_perdida_olfato', 'sintoma_perdida_gusto']
+    lista = []
+    for x in lista_de_sintomas:
+        a = request.POST.get(x)
+        if a:
+            lista.append(a)
+    if len(lista) >= 1:
+        return True 
+    else:
+        return False
 
 def students_form(request):
-    if request.POST['contacto_estrecho'] == "si":
+    a =  request.POST.get('contacto_estrecho')
+    if a == "si":
         return render(request, "safepass/exit.html")
-    a =  request.POST.get('sintoma_fiebre')
-    if a:
-        return render(request, "safepass/exit.html")
-    a =  request.POST.get('sintoma_perdida_olfato')
-    if a:
-        return render(request, "safepass/exit.html")
-    a =  request.POST.get('sintoma_perdida_gusto')
-    if a:
-        return render(request, "safepass/exit.html")
-
-    busqueda_sintomas(request)
     
-
-
+    if request.method == "POST":
+        if busqueda_sintomas_cardinales(request):
+            return render(request, "safepass/exit.html")
+        if busqueda_sintomas_no_cardinales(request):
+            return render(request, "safepass/exit.html")
 
     if request.method == "POST":
         profile_form = PerfilForm(request.POST)
