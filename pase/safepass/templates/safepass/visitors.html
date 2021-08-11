@@ -1,8 +1,9 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}Formulario visitantes{% endblock %} 
+{% block title %}Formulario estudiantes{% endblock %} 
 
 {% block content %}
+{% load crispy_forms_tags %}
 <div id="wrapper">
     <div class="d-flex flex-column" id="content-wrapper" style="min-height: 100%;">
         <div id="content">
@@ -16,55 +17,40 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="card shadow mb-3">
                                         <div class="card-header py-3">
-                                            <p class="text-primary m-0 font-weight-bold">Información del Estudiante</p>
+                                            <p class="text-primary m-0 font-weight-bold">Información del Visitante</p>
                                         </div>
                                         <div class="card-body">
                                             <div class="container-fluid">
                                                 <div class="form-row mb-3">
                                                     <div class="col">
-                                                        <label for="name" style="width: 100%;"><strong>Nombres</strong></label>
-                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="" name="name">
+                                                        {{ profile_form.nombre|as_crispy_field }}
                                                     </div>
                                                 </div>
                                                 <div class="form-row mb-3">
                                                     <div class="col">
-                                                        <label for="last_name" style="width: 100%;"><strong>Apellidos</strong></label>
-                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" name="last_name" readonly="">
+                                                        {{ profile_form.apellido|as_crispy_field }}
                                                     </div>
                                                 </div>
                                                 <div class="form-row mb-3">
                                                     <div class="col">
-                                                        <label for="username" style="width: 100%;"><strong>RUT</strong></label>
-                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" name="rut" readonly="">
-                                                    </div>
-                                                </div>
-                                                <div class="form-row mb-3">
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <label for="email" style="width: 100%;"><strong>Correo</strong><br></label>
-                                                        <input value=" " class="form-control form-control form-control-user" type="email" name="email" readonly="">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="telephone" style="width: 100%;"><strong>Teléfono</strong><br></label>
-                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="">
+                                                        {{ profile_form.rut|as_crispy_field }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card-header py-3">
-                                            <p class="text-primary m-0 font-weight-bold">Antecedentes Académicos</p>
+                                            <p class="text-primary m-0 font-weight-bold">Información de Contacto</p>
                                         </div>
                                         <div class="card-body">
                                             <div class="container-fluid">
                                                 <div class="form-row mb-3">
                                                     <div class="col">
-                                                        <label for="name" style="width: 100%;"><strong>Facultad</strong></label>
-                                                        <input value=" " class="form-control form-control form-control-user" type="text" style="width: 100%;" readonly="" name="name">
+                                                        {{ profile_form.email|as_crispy_field }}
                                                     </div>
                                                 </div>
                                                 <div class="form-row mb-3">
                                                     <div class="col">
-                                                        <label for="last_name" style="width: 100%;"><strong>Carrera</strong></label>
-                                                        <input value="" class="form-control form-control form-control-user" type="text" style="width: 100%;" name="last_name" readonly="">
+                                                        {{ profile_form.telefono|as_crispy_field }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,16 +60,50 @@
                                 <div class="col">
                                     <div class="card shadow mb-3">
                                         <div class="card-header py-3">
-                                            <p class="text-primary m-0 font-weight-bold">Actividades generales</p>
+                                            <p class="text-primary m-0 font-weight-bold">Actividad</p>
                                         </div>
                                         <div class="card-body">
                                             <div class="container-fluid">
                                                 <div class="form-row mb-3">
-                                                    <p class="lead">Lista de actividades</p>
+                                                    <div class="col">
+                                                        {{ activity_general.fecha|as_crispy_field }}hora
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mb-3">
+                                                    <div class="col">
+                                                        {{ activity_general.hora_inicio|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mb-3">
+                                                    <div class="col">
+                                                        {{ activity_general.hora_fin|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mb-3">
+                                                    <div class="col">
+                                                        {{ activity_general.dependencia|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mb-3">
+                                                    <div class="col">
+                                                        {{ activity_general.descripcion|as_crispy_field }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    {% comment %} <div class="card shadow mb-3">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 font-weight-bold">Eventos Programados</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="container-fluid">
+                                                <div class="form-row mb-3">
+                                                    <p class="lead">Lista de eventos</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> {% endcomment %}
                                 </div>
                             </div>
                             <div class="form-row">
@@ -95,68 +115,43 @@
                                         <div class="card-body">
                                             <div class="container-fluid">
                                                 <div class="form-row">
-                                                    <div class="col-12 col-lg-6">
+                                                    <div class="col-md-9 mx-auto">
                                                         <div class="form-row mb-5">
-                                                            <div class="col-9">
+                                                            <div>
                                                                 <label class="col-form-label" style="width: 100%;" for="contact_has_been_made">¿HA SIDO CONTACTO ESTRECHO DE UNA PERSONA ENFERMA O SOSPECHOSA DE CORONAVIRUS (COVID-19), LOS ÚLTIMOS 14 DÍAS?<br></label>
                                                             </div>
                                                             <div class="col">
-                                                                <div class="form-check">        
-                                                                    <input class="form-check-input" type="radio" id="formRadio-contact" name="contact_has_been_made" value="" checked required="">
-                                                                    <label class="form-check-label" for="formRadio-contact-"></label>
+                                                                <div class="form-check">
+                                                                    {{ statement_form.contacto_estrecho|as_crispy_field }}     
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-row mb-3">
                                                             <div class="col-sm-12 col-md-6" style="margin-bottom: 16px;">
                                                                 <label style="width: 100%;"><strong>¿Ha presentado alguno de estos síntomas cardinales?</strong></label>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-14" name="symptom_fever" checked><label class="form-check-label" for="formCheck-14">Tos</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-15" name="symptom_loss_of_smell"><label class="form-check-label" for="formCheck-15">Disnea o dificultad respiratoria</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-16" name="symptom_loss_of_taste"><label class="form-check-label" for="formCheck-16">Congestión nasal</label></div>
+                                                                {{ statement_form.sintoma_fiebre|as_crispy_field }}
+                                                                {{ statement_form.sintoma_perdida_olfato|as_crispy_field }}
+                                                                {{ statement_form.sintoma_perdida_gusto|as_crispy_field }}
                                                             </div>
                                                             <div class="col">
                                                                 <label style="width: 100%;"><strong>¿Ha presentado alguno de estos síntomas no cardinales?</strong></label>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" name="symptom_cough" checked><label class="form-check-label" for="formCheck-2">Tos</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" name="symptom_respiratory_distress"><label class="form-check-label" for="formCheck-3">Disnea o dificultad respiratoria</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" name="symptom_nasal_secretions"><label class="form-check-label" for="formCheck-4">Congestión nasal</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-5" name="symptom_increased_respiratory_rate"><label class="form-check-label" for="formCheck-5">Aumento de la frecuencia respiratoria</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" name="symptom_sore_throat"><label class="form-check-label" for="formCheck-6">Dolor de garganta</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7" name="symptom_muscle_pain"><label class="form-check-label" for="formCheck-7">Dolor muscular</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" name="symptom_fatigue"><label class="form-check-label" for="formCheck-8">Fatiga</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-9" name="symptom_chest_pain"><label class="form-check-label" for="formCheck-9">Escalofríos</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-10" name="symptom_shaking_chills"><label class="form-check-label" for="formCheck-10">Dolor torácico</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-11" name="symptom_headache"><label class="form-check-label" for="formCheck-11">Dolor de cabeza</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-12" name="symptom_diarrhea"><label class="form-check-label" for="formCheck-12">Diarrea</label></div>
-                                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-13" name="symptom_nausea_vomiting"><label class="form-check-label" for="formCheck-13">Náuseas/vómito</label></div>  
+                                                                {{ statement_form.sintoma_tos|as_crispy_field }}
+                                                                {{ statement_form.sintoma_dolor_garganta|as_crispy_field }}
+                                                                {{ statement_form.sintoma_secrecion_nasal|as_crispy_field }}
+                                                                {{ statement_form.sintoma_respiratorio|as_crispy_field }}
+                                                                {{ statement_form.sintoma_aumento_frecuencia|as_crispy_field }}
+                                                                {{ statement_form.sintoma_dolor_toracico|as_crispy_field }}
+                                                                {{ statement_form.sintoma_dolor_muscular|as_crispy_field }}
+                                                                {{ statement_form.sintoma_dolor_cabeza|as_crispy_field }}
+                                                                {{ statement_form.sintoma_fatiga|as_crispy_field }}
+                                                                {{ statement_form.sintoma_escalofrios|as_crispy_field }}
+                                                                {{ statement_form.sintoma_diarrea|as_crispy_field }}
+                                                                {{ statement_form.sintoma_nausea_vomitos|as_crispy_field }}
                                                             </div>
                                                             <div class="col-12">
-                                                                <div class="d-flex flex-column flex-lg-row" style="margin-top: 16px;">
-                                                                    <span class="text-nowrap d-flex flex-fill align-items-xl-center" style="margin-right: 10px;">Otros síntomas<br></span>
-                                                                    <input class="form-control d-flex align-self-center form-control form-control-user" type="text" name="symptom_other" value="">
+                                                                <div class="form-group">
+                                                                    {{ statement_form.sintoma_otro|as_crispy_field }}
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-lg-6 mt-5 mt-lg-0">
-                                                        <div class="form-row mb-3">
-                                                            <div class="col-sm-12">     
-                                                                <label for="autoimmune_disease" style="width: 100%;">¿Padece alguna enfermedad autoinmune? ¿Cuál?<br></label>
-                                                                <input class="form-control form-control form-control-user" type="text" style="width: 100%;" name="autoimmune_disease" value="">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row mb-3">
-                                                            <div class="col-sm-12">
-                                                                <label for="chronic_disease" style="width: 100%;">¿Padece alguna enfermedad crónica?&nbsp;¿Cuál?<br></label>
-                                                                <input class="form-control form-control form-control-user" type="text" style="width: 100%;" name="chronic_disease" value="">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row mb-3">
-                                                            <div class="col-sm-12">
-                                                                <label for="is_pregnant" style="width: 100%;">Si es mujer, ¿Está embarazada?<br></label>
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="radio" id="formRadio-pregnancy" value="" name="is_pregnant" checked>
-                                                                        <label class="form-check-label" for="formRadio-pregnancy"></label>
-                                                                    </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -177,12 +172,7 @@
                                                 <div class="form-row mb-3">
                                                     <div class="col-12">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="formCheck-1" name="confirm_declaration" checked required="">
-                                                            <label class="form-check-label" for="formCheck-1">
-                                                                <em>DECLARO QUE NO SOY UN CASO ACTIVO CONFIRMADO DE COVID-19, TAMPOCO CALIFICO COMO CASO SOSPECHOSO NI PROBABLE, DE ACUERDO A LO ESTABLECIDO EN LA NORMA SANITARIA, 
-                                                                    COMO LO REFIERE EL TÍTULO VI, Nº3, LETRAS a), b), c) y d) DE ESTE PROTOCOLO, POR LO QUE ESTOY EN CONDICIONES DE SALUD ÓPTIMAS Y ADECUADAS PARA INGRESAR A LAS ACTIVIDADES DE PRÁCTICA PROFESIONAL Y/O ACTIVIDADES CURRICULARES PRESENCIALES EN EL CAMPUS, 
-                                                                    SIN REPRESENTAR UN RIESGO PARA OTROS. DECLARO QUE MIS ANTECEDENTES ACTUALES DE SALUD SON LOS DECLARADOS ANTERIORMENTE</em>
-                                                            </label>
+                                                            {{ statement_form.declaracion_confirmar|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -191,7 +181,9 @@
                                                         <a target="_blank" href="#">Plantilla de documento</a><br>
                                                         <a target="_blank" href="#"></a>
                                                         <br>
-                                                        <input type="file" name="statement_of_responsibilities" required="" id="id_statement_of_responsibilities">
+                                                        <div class="form-group">
+                                                            {{ statement_form.declaracion_archivo|as_crispy_field }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-row text-right mb-3">

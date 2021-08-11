@@ -38,6 +38,7 @@ class ActividadAcademica(models.Model):
     hora_inicio = models.TimeField(verbose_name="horario de inicio")
     hora_fin = models.TimeField(verbose_name="horario de término")
     aula = models.CharField(max_length=100, verbose_name="aula / dependencia")
+    aforo = models.IntegerField(null=True)
     asignatura = models.CharField(max_length=100)
     docente = models.CharField(max_length=200)
     facultad = models.CharField(max_length=200)
@@ -164,9 +165,9 @@ class Visita(models.Model):
         canvas = Image.new('RGB', (290, 290), "white")
         draw = ImageDraw.Draw(canvas)
         canvas.paste(qrcode_img)
-        fname = f'qr_code-{self.antecedente_personal.rut}.pdf'
+        fname = f'qr_code-{self.antecedente_personal.rut}.jpeg'
         buffer = BytesIO()
-        canvas.save(buffer,'PDF')
+        canvas.save(buffer,"JPEG")
         self.qr_code.save(fname, File(buffer), save=False)
         canvas.close()
         super().save(*args, **kargs)

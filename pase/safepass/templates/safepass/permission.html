@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Permiso de {{ permission.name }} {{ permission.last_name }}</title>
+    <title>Permiso de {{ permission.antecedente_personal.nombre }} {{ permission.antecedente_personal.apellido }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <style>
         body {
@@ -25,42 +25,44 @@
 
 </head>
 <body>
+    {% load static %}
+
     <img src="/static/core/img/logos/unach2.png" height="200px">
     
     <table>
         <tbody>
             <tr>
                 <td>RUT</td>
-                <td>{{ permission.rut }}</td>
+                <td>{{ permission.antecedente_personal.rut }}</td>
             </tr>
             <tr>
                 <td>Nombres</td>
-                <td>{{ permission.nombres }}</td>
+                <td>{{ permission.antecedente_personal.nombre }}</td>
             </tr>
             <tr>
                 <td>Apellidos</td>
-                <td>{{ permission.apellidos }}</td>
+                <td>{{ permission.antecedente_personal.apellido }}</td>
             </tr>
-            {% if permission.email %}
+            {% if permission.antecedente_personal.email %}
             <tr>
                 <td>Correo</td>
-                <td>{{ permission.email }}</td>
+                <td>{{ permission.antecedente_personal.email }}</td>
             </tr>
             {% endif %}
-            {% if permission.telephone %}
+            {% if permission.antecedente_personal.telefono %}
             <tr>
                 <td>Telefono</td>
-                <td>{{ permission.telephone }}</td>
+                <td>{{ permission.antecedente_personal.telefono }}</td>
             </tr>
             {% endif %}
-            <tr>
+            {% comment %} <tr>
                 <td>Facultad</td>
                 <td>{{ permission.faculty }}</td>
             </tr>
             <tr>
                 <td>Carrera</td>
                 <td>{{ permission.career }}</td>
-            </tr>
+            </tr> 
             {% if permission.activity_description %}
             <tr>
                 <td>Descripción</td>
@@ -90,12 +92,13 @@
                         {% if activity.course %}"{{ activity.course }}"{% endif %} {{ activity.name }} de {{ activity.date_time | time }} a {{ activity.ending_time | time }} horas en sala {{ activity.class_room }}
                         <br>
                     {% endfor %}
+
                 </td>
-            </tr>
+            </tr>{% endcomment %}
         </tbody>
     </table>
     <div id="footer" class="center">
-        <img src="{{ permission.qr_code }}" height="200px">
+        <img src="{{ permission.qr_code.url }}" height="200px">
     </div>
 </body>
 </html>

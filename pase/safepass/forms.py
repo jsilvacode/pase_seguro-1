@@ -1,6 +1,6 @@
 from django import forms
 from .models import (AntecedentesPersonales, AntecedentesAcademicos, 
-                     AntecedentesSanitarios)
+                     AntecedentesSanitarios, ActividadGeneral)
 
 
 class PerfilForm(forms.ModelForm):
@@ -85,4 +85,21 @@ class DeclaracionForm(forms.ModelForm):
             'sintoma_otro': forms.TextInput(attrs={'class': 'form-control'}),
             'declaracion_confirmar': forms.CheckboxInput(),
             'declaracion_archivo': forms.FileInput(attrs={'required': True}),
+        }
+
+
+class ActividadGeneralForm(forms.ModelForm):
+    class Meta:
+        model = ActividadGeneral
+        fields = ['fecha', 
+                  'hora_inicio',
+                  'hora_fin',
+                  'dependencia',
+                  'descripcion']
+        widgets = {
+            'fecha': forms.TextInput(attrs={'class': 'form-control'}),
+            'hora_inicio': forms.TextInput(attrs={'class': 'form-control'}),
+            'hora_fin': forms.TextInput(attrs={'class': 'form-control',}),
+            'dependencia': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
         }
