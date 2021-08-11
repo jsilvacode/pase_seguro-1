@@ -40,10 +40,8 @@ class ActividadAcademica(models.Model):
     aula = models.CharField(max_length=100, verbose_name="aula / dependencia")
     asignatura = models.CharField(max_length=100)
     docente = models.CharField(max_length=200)
-    facultad_carrera = models.ManyToManyField(
-        AntecedentesAcademicos, related_name="get_faculty_career",
-        verbose_name="facultad / carrera"
-    )
+    facultad = models.CharField(max_length=200)
+    carrera = models.CharField(max_length=200)
 
     class Meta:
         verbose_name = "Actividad Académica"
@@ -135,7 +133,7 @@ class Estudiante(models.Model):
     )
 
     def __str__(self):
-        return self.rut.rut
+        return self.antecedente_personal.rut
 
     class Meta:
         verbose_name = "Estudiante"
