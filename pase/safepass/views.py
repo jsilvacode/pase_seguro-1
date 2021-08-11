@@ -23,10 +23,31 @@ def check_form(request):
             personal_fields = Visita.objects.filter(antecedente_personal_id=id_visit)
     except AntecedentesPersonales.DoesNotExist:
         raise Http404("Estudiante no registrado")
-    return render(request, "safepass/check_form.html", {'personal_fields': personal_fields})
+    return render(request, "safepass/check_form.html")#, {'personal_fields': personal_fields})
+
+def busqueda_sintomas(request):
+    pass
+
 
 
 def students_form(request):
+    if request.POST['contacto_estrecho'] == "si":
+        return render(request, "safepass/exit.html")
+    a =  request.POST.get('sintoma_fiebre')
+    if a:
+        return render(request, "safepass/exit.html")
+    a =  request.POST.get('sintoma_perdida_olfato')
+    if a:
+        return render(request, "safepass/exit.html")
+    a =  request.POST.get('sintoma_perdida_gusto')
+    if a:
+        return render(request, "safepass/exit.html")
+
+    busqueda_sintomas(request)
+    
+
+
+
     if request.method == "POST":
         profile_form = PerfilForm(request.POST)
         if profile_form .is_valid():
