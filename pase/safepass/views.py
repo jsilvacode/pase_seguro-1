@@ -1,7 +1,7 @@
 from django.http.response import Http404
 from django.shortcuts import render
-from .forms import (PerfilForm, EducacionForm, DeclaracionForm)
-from .models import AntecedentesPersonales, Visita
+from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm)
+from .models import AntecedentesPersonales, ActividadAcademica, Visita
 
 
 def check(request):
@@ -56,6 +56,8 @@ def busqueda_sintomas_cardinales(request):
         return False
 
 def students_form(request):
+    events_forty_eigth = ActividadAcademica.objects.all()
+
     a =  request.POST.get('contacto_estrecho')
     if a == "si":
         return render(request, "safepass/exit.html")
@@ -81,14 +83,20 @@ def students_form(request):
         if profile_form.is_valid():
                 data = statement_form.save(commit=False)
                 data.save()
+    if request.method == "POST":
+        events_form = EventosForm(request.POST)
+        if events_form.is_valid():
+                data = events_form.save(commit=False)
+                data.save()
     
     profile_form = PerfilForm()
     education_form = EducacionForm()
     statement_form = DeclaracionForm()
+    events_form = EventosForm()
     # ----
     return render(request, "safepass/students.html", {
         'profile_form': profile_form, 'education_form': education_form, 
-        'statement_form': statement_form
+        'statement_form': statement_form, 'events_forty_eigth': events_forty_eigth
     })
 
 

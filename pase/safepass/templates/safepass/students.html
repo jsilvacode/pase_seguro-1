@@ -21,7 +21,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="container-fluid">
-                                                <div class="form-row mb-3">
+                                                <div class="form-row mb-4">
                                                     <div class="col">
                                                         {{ profile_form.nombre|as_crispy_field }}
                                                     </div>
@@ -38,27 +38,25 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card shadow mb-3">
                                         <div class="card-header py-3">
                                             <p class="text-primary m-0 font-weight-bold">Información de Contacto</p>
                                         </div>
                                         <div class="card-body">
                                             <div class="container-fluid">
                                                 <div class="form-row mb-3">
-                                                    <div class="col">
+                                                    <div class="col-sm-12 col-md-6">
                                                         {{ profile_form.email|as_crispy_field }}
                                                     </div>
-                                                </div>
-                                                <div class="form-row mb-3">
-                                                    <div class="col">
+                                                    <div class="col-sm-12 col-md-6">
                                                         {{ profile_form.telefono|as_crispy_field }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card shadow mb-3">
                                         <div class="card-header py-3">
                                             <p class="text-primary m-0 font-weight-bold">Antecedentes Académicos</p>
                                         </div>
@@ -77,14 +75,55 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-12">
                                     <div class="card shadow mb-3">
                                         <div class="card-header py-3">
                                             <p class="text-primary m-0 font-weight-bold">Eventos Programados</p>
                                         </div>
                                         <div class="card-body">
                                             <div class="container-fluid">
-                                                <div class="form-row mb-3">
-                                                    <p class="lead">Lista de eventos</p>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="form-row mb-5">
+                                                            <div class="col">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-borderless">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col"><i class="fas fa-calendar-alt"></i></th>
+                                                                                <th scope="col">Fecha</th>
+                                                                                <th scope="col">Inicio</th>
+                                                                                <th scope="col">Término</th>
+                                                                                <th scope="col">Asignatura</th>
+                                                                                <th scope="col">Facultad</th>
+                                                                                <th scope="col">Carrera</th>
+                                                                                <th scope="col">Aula</th>
+                                                                                <th scope="col">Docente</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {% for events in events_forty_eigth %}
+                                                                                <tr>
+                                                                                    <th scope="row"><input type="radio" name="selectedItem" id="selectedItem"></th>
+                                                                                    <td>{{ events.fecha|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                                    <td>{{ events.hora_inicio }}</td>
+                                                                                    <td>{{ events.hora_fin }}</td>
+                                                                                    <td>{{ events.asignatura }}</td>
+                                                                                    <td>{{ events.facultad }}</td>
+                                                                                    <td>{{ events.carrera }}</td>
+                                                                                    <td>{{ events.aula }}</td>
+                                                                                    <td>{{ events.docente }}</td>
+                                                                                </tr>
+                                                                            {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +144,7 @@
                                                             <div>
                                                                 <label class="col-form-label" style="width: 100%;" for="contact_has_been_made">¿HA SIDO CONTACTO ESTRECHO DE UNA PERSONA ENFERMA O SOSPECHOSA DE CORONAVIRUS (COVID-19), LOS ÚLTIMOS 14 DÍAS?<br></label>
                                                             </div>
-                                                            <div class="col">
+                                                            <div class="col-md-6 mx-auto">
                                                                 <div class="form-check">
                                                                     {{ statement_form.contacto_estrecho|as_crispy_field }}     
                                                                 </div>
@@ -172,7 +211,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-row text-right mb-3">
-                                                    <div class="col"><button class="btn btn-primary text-white btn-user" type="submit">Enviar</button></div>
+                                                    <div class="col">
+                                                        <button class="btn btn-primary text-white btn-user" type="submit">Enviar</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

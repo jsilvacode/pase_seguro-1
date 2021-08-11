@@ -1,6 +1,6 @@
 from django import forms
 from .models import (AntecedentesPersonales, AntecedentesAcademicos, 
-                     AntecedentesSanitarios)
+                     AntecedentesSanitarios, ActividadAcademica)
 
 
 class PerfilForm(forms.ModelForm):
@@ -86,3 +86,15 @@ class DeclaracionForm(forms.ModelForm):
             'declaracion_confirmar': forms.CheckboxInput(),
             'declaracion_archivo': forms.FileInput(attrs={'required': True}),
         }
+
+class EventosForm(forms.ModelForm):
+    class Meta:
+        model = ActividadAcademica
+        fields = ['fecha',
+                  'hora_inicio',
+                  'hora_fin',
+                  'aula',
+                  'asignatura',
+                  'docente',
+                  'facultad',
+                  'carrera']
