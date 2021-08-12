@@ -1,11 +1,14 @@
+from django.conf import settings
 from django.http.response import Http404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.template.loader import get_template
 from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
                     ActividadGeneralForm)
 from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante,
                      ActividadGeneral)
 import  datetime 
-
+from xhtml2pdf import pisa
 
 def check(request):
     algo = ""
@@ -107,6 +110,10 @@ def students_form(request):
             antecedente_sanitario=data3
             )
         a.save()
+        permission = a
+        #pk = int(a.id)
+        #render_pdf_view(request, pk)
+        return render(request, "safepass/permission.html", {'permission': permission})
     
     profile_form = PerfilForm()
     education_form = EducacionForm()
@@ -121,7 +128,14 @@ def students_form(request):
 
 
 def visitors_form(request):
-    activities_forty_eigth = ActividadAcademica.objects.all()
+    hoy = datetime.date.today()
+    pasado = datetime.date.today() + datetime.timedelta(days=2)
+    lista = ActividadAcademica.objects.all()
+    events_forty_eigth = []
+    for event in lista:
+        if event.fecha <= pasado:
+            if event.fecha >= hoy:
+                events_forty_eigth.append(event)
 
     a =  request.POST.get('contacto_estrecho')
     if a == "si":
@@ -155,6 +169,8 @@ def visitors_form(request):
             actividad_general=data3
             )
         a.save()
+        permission = a
+        return render(request, "safepass/permission.html", {'permission': permission})
     
     profile_form = PerfilForm()
     statement_form = DeclaracionForm()
@@ -165,5 +181,49 @@ def visitors_form(request):
         'activity_general': activity_general, 'activities_forty_eigth': activities_forty_eigth
     })
 
-def render_pdf_view(request):
-    return render(request, "safepass/permission.html")
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources
+    """
+    sUrl = settings.STATIC_URL        # Typically /static/
+    mUrl = settings.MEDIA_URL         # Typically /media
+    path = ''
+
+    if uri.startswith(mUrl):
+        path = "{}{}".format(settings.BASE_DIR._str, uri)
+    elif uri.startswith(sUrl):
+        path = "{}{}".format(settings.BASE_DIR._str, uri)
+    else:
+        return uri
+
+    return path
+
+def render_pdf_view(request, *args, **kwargs):
+    #permission = get_object_or_404(StatementOfConditions, pk=kwargs.get('pk'))
+    if Visita.objects.get(id=id):
+        permission = Visita.objects.get(id=id)
+    if Estudiante.objects.get(id=id):
+        permission = Estudiante.objects.get(id=id)
+    context = {'permission': permission}
+
+    template_path = 'SanitaryRegulations/permission_pdf_template.html'
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+
+    # download
+    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+    # display
+    response['Content-Disposition'] = 'filename="permission.pdf"'
+
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response

@@ -7,7 +7,7 @@ from django.db.models.deletion import CASCADE
 
 
 class AntecedentesPersonales(models.Model):
-    rut = models.CharField(max_length=12, unique=True, verbose_name="RUT")
+    rut = models.CharField(max_length=30, verbose_name="RUT")
     nombre = models.CharField(max_length=200, verbose_name="nombres")
     apellido = models.CharField(max_length=200, verbose_name="apellidos")
     email = models.EmailField(max_length=100, verbose_name="correo electrónico")
@@ -32,6 +32,7 @@ class AntecedentesAcademicos(models.Model):
         verbose_name = "Antecedente Académico"
         verbose_name_plural = "Antecedentes Académicos"
         ordering = ['facultad', 'carrera']
+
 
 class ActividadAcademica(models.Model):
     fecha = models.DateField()
@@ -132,9 +133,22 @@ class Estudiante(models.Model):
         AntecedentesSanitarios, on_delete=CASCADE, null=False, blank=False, 
         verbose_name="antecedentes sanitarios",
     )
+    qr_code = models.ImageField(upload_to="qr_codes", blank=True)
 
     def __str__(self):
         return self.antecedente_personal.rut
+
+    def save(self, *args, **kargs):
+        qrcode_img = qrcode.make(self.antecedente_personal.rut)
+        canvas = Image.new('RGB', (290, 290), "white")
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_img)
+        fname = f'qr_code-{self.antecedente_personal.rut}.jpeg'
+        buffer = BytesIO()
+        canvas.save(buffer,"JPEG")
+        self.qr_code.save(fname, File(buffer), save=False)
+        canvas.close()
+        super().save(*args, **kargs)
 
     class Meta:
         verbose_name = "Estudiante"
