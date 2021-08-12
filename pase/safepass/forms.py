@@ -116,3 +116,39 @@ class EventosForm(forms.ModelForm):
                   'docente',
                   'facultad',
                   'carrera']
+
+""" class ActividadAcademicaForm(ModelForm):    
+    contatto_choice = forms.ModelChoiceField(queryset=ActividadAcademica.objects.all())
+    class Meta:
+        model = AntecedentesAcademicos
+        fields = ['fecha',
+                  'hora_inicio',
+                  'hora_fin',
+                  'aula',
+                  'asignatura',
+                  'docente',
+                  'facultad',
+                  'carrera'] """
+
+""" class ActividadAcademicaForm(forms.Form):
+    eventos = forms.ModelMultipleChoiceField(queryset=None)
+    widgets = {
+            'eventos': forms.TextInput(
+                attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['eventos'].queryset = ActividadAcademica.objects.all()
+    
+    class Meta:
+        model = AntecedentesAcademicos  """
+
+
+""" class ActividadAcademicaForm(forms.Form): 
+    
+    eventos = forms.ChoiceField(widget=forms.Select())
+
+    def __init__(self, *args, **kwargs):
+        super(forms.Form, self).__init__(*args, **kwargs)
+        self.fields['eventos'].choices = [ l.hora_inicio for l in ActividadAcademica.objects.all()] """
