@@ -4,6 +4,7 @@ from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
                     ActividadGeneralForm)
 from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante,
                      ActividadGeneral)
+import  datetime 
 
 
 def check(request):
@@ -59,7 +60,15 @@ def busqueda_sintomas_cardinales(request):
 
 
 def students_form(request):
-    events_forty_eigth = ActividadAcademica.objects.all()
+    hoy = datetime.date.today()
+    pasado = datetime.date.today() + datetime.timedelta(days=2)
+    lista = ActividadAcademica.objects.all()
+    events_forty_eigth = []
+    for event in lista:
+        if event.fecha <= pasado:
+            if event.fecha >= hoy:
+                events_forty_eigth.append(event)
+    
 
     a =  request.POST.get('contacto_estrecho')
     if a == "si":
