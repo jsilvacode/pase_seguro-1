@@ -107,7 +107,6 @@
                                                                         <tbody>
                                                                             {% for events in events_forty_eigth %}
                                                                                 <tr>
-                                                                                    <td><input type="text" id="name" name="name" required minlength="1" maxlength="8" size="10"></td>
                                                                                     <td>{{ events.id }}</td>
                                                                                     <td>{{ events.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                                                                                     <td>{{ events.hora_inicio }}</td>
@@ -119,9 +118,9 @@
                                                                             {% endfor %}
                                                                         </tbody>
                                                                     </table>
-                                                                    <div class="col-12">
+                                                                    <div class="col">
                                                                         <div class="form-group">
-                                                                            <input type="text" id="name" name="name" placeholder="Ingrese texto" required minlength="1" maxlength="8" size="10">
+                                                                            <input type="text" id="name" name="name" placeholder="Ingrese texto" required  maxlength="8" size="10">
                                                                         </div>
                                                                     </div>
                                                                 </div> 
