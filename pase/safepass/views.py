@@ -2,7 +2,7 @@ from django.http.response import Http404
 from django.shortcuts import render
 from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
                     ActividadGeneralForm)
-from .models import (AntecedentesPersonales, ActividadAcademica, Visita,
+from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante,
                      ActividadGeneral)
 
 
@@ -87,16 +87,15 @@ def students_form(request):
                 data3 = statement_form.save(commit=False)
                 data3.save()
     if request.method == "POST":
-        events_form = EventosForm(request.POST)
-        if events_form.is_valid():
-                data4 = events_form.save(commit=False)
-                data4.save()
+        id = request.POST['name']
+        data4 = ActividadAcademica.objects.get(id=int(id))
+
     if  request.method=="POST":
-        a = Visita.objects.create(
+        a = Estudiante.objects.create(
             antecedente_personal=data1,
             antecedente_academico=data2,
-            actividad_academica=data3,
-            antecedente_sanitario=data4
+            actividad_academica=data4,
+            antecedente_sanitario=data3
             )
         a.save()
     
