@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http.response import Http404
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template.loader import get_template
 from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
                     ActividadGeneralForm)
@@ -25,11 +25,10 @@ def check_form(request):
     try:
         if request.POST:
             a=request.POST['rut']
-            id_visit = AntecedentesPersonales.objects.get(rut=a).id
-            personal_fields = Visita.objects.filter(antecedente_personal_id=id_visit)
+            personal_fields = AntecedentesPersonales.objects.filter(rut=a)
     except AntecedentesPersonales.DoesNotExist:
         raise Http404("Estudiante no registrado")
-    return render(request, "safepass/check_form.html")#, {'personal_fields': personal_fields})
+    return render(request, "safepass/check_form.html", {'personal_fields': personal_fields})
 
 def busqueda_sintomas_no_cardinales(request):
 
@@ -200,14 +199,16 @@ def link_callback(uri, rel):
     return path
 
 def render_pdf_view(request, *args, **kwargs):
-    #permission = get_object_or_404(StatementOfConditions, pk=kwargs.get('pk'))
-    if Visita.objects.get(id=id):
-        permission = Visita.objects.get(id=id)
-    if Estudiante.objects.get(id=id):
-        permission = Estudiante.objects.get(id=id)
+    permission = get_object_or_404(AntecedentesPersonales, pk=kwargs.get('pk'))
     context = {'permission': permission}
+    #permission = get_object_or_404(StatementOfConditions, pk=kwargs.get('pk'))
+    #if Visita.objects.get(id=id):
+    #    permission = Visita.objects.get(id=id)
+    #if Estudiante.objects.get(id=id):
+    #    permission = Estudiante.objects.get(id=id)
+    #context = {'permission': permission}
 
-    template_path = 'SanitaryRegulations/permission_pdf_template.html'
+    template_path = 'safepass/permission_pdf_template.html'
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
 
