@@ -93,7 +93,6 @@
                                                                     <table class="table table-borderless">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th scope="col"><i class="fas fa-calendar-alt"></i></th>
                                                                                 <th scope="col">Codigo</th>
                                                                                 <th scope="col">Fecha</th>
                                                                                 <th scope="col">Inicio</th>
@@ -108,14 +107,12 @@
                                                                         <tbody>
                                                                             {% for events in events_forty_eigth %}
                                                                                 <tr>
-                                                                                    <th scope="row"><input type="radio" name="selectedItem" id="selectedItem"></th>
+                                                                                    <td><input type="text" id="name" name="name" required minlength="1" maxlength="8" size="10"></td>
                                                                                     <td>{{ events.id }}</td>
                                                                                     <td>{{ events.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                                                                                     <td>{{ events.hora_inicio }}</td>
                                                                                     <td>{{ events.hora_fin }}</td>
                                                                                     <td>{{ events.asignatura }}</td>
-                                                                                    <td>{{ events.facultad }}</td>
-                                                                                    <td>{{ events.carrera }}</td>
                                                                                     <td>{{ events.aula }}</td>
                                                                                     <td>{{ events.docente }}</td>
                                                                                 </tr>
@@ -123,10 +120,10 @@
                                                                         </tbody>
                                                                     </table>
                                                                     <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <input type="text" id="name" name="name" required minlength="1" maxlength="8" size="10">
+                                                                        <div class="form-group">
+                                                                            <input type="text" id="name" name="name" placeholder="Ingrese texto" required minlength="1" maxlength="8" size="10">
+                                                                        </div>
                                                                     </div>
-                                                            </div>
                                                                 </div> 
                                                             </div>
                                                         </div>
