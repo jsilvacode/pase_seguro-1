@@ -35,15 +35,26 @@ class AntecedentesAcademicos(models.Model):
 
 
 class ActividadAcademica(models.Model):
+
+    FACS = 'Facultad de Ciencias de la Salud'
+    FECS = 'Facultad de Educación y Ciencias Sociales'
+    FAIN = 'Facultad de Ingeniería y Negocios'
+    FTEO = 'Facultad de Teología'
+    FACULTADES = [
+        (FACS, 'FACS'),
+        (FECS, 'FECS'),
+        (FAIN, 'FAIN'),
+        (FTEO, 'FTEO'),
+    ]
     fecha = models.DateField()
     hora_inicio = models.TimeField(verbose_name="horario de inicio")
     hora_fin = models.TimeField(verbose_name="horario de término")
     aula = models.CharField(max_length=100, verbose_name="aula / dependencia")
     aforo = models.IntegerField(null=True)
     asignatura = models.CharField(max_length=100)
-    docente = models.CharField(max_length=200)
-    facultad = models.CharField(max_length=200)
-    carrera = models.CharField(max_length=200)
+    docente = models.CharField(max_length=100)
+    facultad = models.CharField(max_length=100, choices=FACULTADES)
+    carrera = models.CharField(max_length=100)
 
     class Meta:
         verbose_name = "Actividad Académica"
