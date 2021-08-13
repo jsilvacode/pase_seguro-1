@@ -83,7 +83,7 @@ class DeclaracionForm(forms.ModelForm):
             'sintoma_diarrea': forms.CheckboxInput(),
             'sintoma_nausea_vomitos': forms.CheckboxInput(),
             'sintoma_otro': forms.TextInput(attrs={'class': 'form-control'}),
-            'declaracion_confirmar': forms.CheckboxInput(),
+            'declaracion_confirmar': forms.CheckboxInput(attrs={'required': True}),
             'declaracion_archivo': forms.FileInput(attrs={'required': True}),
         }
 
