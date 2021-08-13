@@ -26,9 +26,10 @@ def check_form(request):
         if request.POST:
             a=request.POST['rut']
             personal_fields = AntecedentesPersonales.objects.filter(rut=a)
+            return render(request, "safepass/check_form.html", {'personal_fields': personal_fields})
     except AntecedentesPersonales.DoesNotExist:
         raise Http404("Estudiante no registrado")
-    return render(request, "safepass/check_form.html", {'personal_fields': personal_fields})
+    return render(request, "safepass/check_form.html")# {'personal_fields': personal_fields})
 
 def busqueda_sintomas_no_cardinales(request):
 
@@ -61,16 +62,24 @@ def busqueda_sintomas_cardinales(request):
         return False
 
 
-def students_form(request):
+def eventos():
+
+    lista_de_eventos = []
     hoy = datetime.date.today()
     pasado = datetime.date.today() + datetime.timedelta(days=2)
     lista = ActividadAcademica.objects.all()
-    events_forty_eigth = []
     for event in lista:
         if event.fecha <= pasado:
             if event.fecha >= hoy:
-                events_forty_eigth.append(event)
+                alumnos_en_aula = Estudiante.objects.filter(actividad_academica_id=event.id)
+                if len(alumnos_en_aula) < event.aforo:
+                    lista_de_eventos.append(event)
+    return lista_de_eventos
+
+
+def students_form(request):
     
+    events_forty_eigth = eventos()
 
     a =  request.POST.get('contacto_estrecho')
     if a == "si":
@@ -84,12 +93,12 @@ def students_form(request):
 
     if request.method == "POST":
         profile_form = PerfilForm(request.POST)
-        if profile_form .is_valid():
+        if profile_form.is_valid():
                 data1 = profile_form.save(commit=False)
                 data1.save()
     if request.method == "POST":
         education_form = EducacionForm(request.POST)
-        if education_form .is_valid():
+        if education_form.is_valid():
                 data2 = education_form.save(commit=False)
                 data2.save()
     if request.method == "POST":
@@ -127,14 +136,6 @@ def students_form(request):
 
 
 def visitors_form(request):
-    hoy = datetime.date.today()
-    pasado = datetime.date.today() + datetime.timedelta(days=2)
-    lista = ActividadAcademica.objects.all()
-    events_forty_eigth = []
-    for event in lista:
-        if event.fecha <= pasado:
-            if event.fecha >= hoy:
-                events_forty_eigth.append(event)
 
     a =  request.POST.get('contacto_estrecho')
     if a == "si":
@@ -148,12 +149,12 @@ def visitors_form(request):
 
     if request.method == "POST":
         profile_form = PerfilForm(request.POST)
-        if profile_form .is_valid():
+        if profile_form.is_valid():
                 data1 = profile_form.save(commit=False)
                 data1.save()
     if request.method == "POST":
         statement_form = DeclaracionForm(request.POST)
-        if statement_form .is_valid():
+        if statement_form.is_valid():
                 data2 = statement_form.save(commit=False)
                 data2.save()
     if request.method == "POST":
@@ -177,7 +178,7 @@ def visitors_form(request):
     # ----
     return render(request, "safepass/visitors.html", {
         'profile_form': profile_form, 'statement_form': statement_form, 
-        'activity_general': activity_general, 'activities_forty_eigth': activities_forty_eigth
+        'activity_general': activity_general,# 'activities_forty_eigth': activities_forty_eigth
     })
 
 def link_callback(uri, rel):
