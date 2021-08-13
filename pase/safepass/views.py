@@ -218,9 +218,12 @@ def link_callback(uri, rel):
 def descarga_tu_pdf(request):
     
     if request.method == "POST":
+        permission = []
         rut = request.POST.get('Ingrese su rut')
-        permission= Estudiante.objects.last()
-        #permission = get_object_or_404(AntecedentesPersonales, pk=kwargs.get('pk'))
+        if Estudiante.objects.filter(antecedente_personal__rut=rut):
+            permission = Estudiante.objects.filter(antecedente_personal__rut=rut).last()
+        if Visita.objects.filter(antecedente_personal__rut=rut):
+            permission = Estudiante.objects.filter(antecedente_personal__rut=rut).last()
         context = {'permission': permission}
 
         template_path = 'safepass/permission.html'
