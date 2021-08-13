@@ -99,6 +99,8 @@
                         </div>
                         <div class="col">
                             <div class="card shadow mb-3">
+                                {% for antecedente in antecedentes %}
+                                
                                 <div class="card-header py-3">
                                     <p class="text-primary m-0 font-weight-bold">Antecedentes Académicos</p>
                                 </div>
@@ -107,10 +109,10 @@
                                         <div class="row mb-3">
                                             <div class="col-sm-12 col-md-6">
                                                 <label for="faculty" style="width: 100%;"><strong>Facultad</strong><br></label>
-                                                <h2 class="section-heading title">{{project.telefono}}</h2>
+                                                <h2 class="section-heading title">{{antecedente.facultad}}</h2>
                                             <div class="col">
-                                                <label for="career" style="width: 100%;"><strong>Carrrera</strong><br></label>
-                                                <h2 class="section-heading title">{{project.telefono}}</h2>
+                                                <label for="career" style="width: 100%;"><strong>Carrera</strong><br></label>
+                                                <h2 class="section-heading title">{{antecedente.carrera}}</h2>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-12">
@@ -124,11 +126,13 @@
                                             <div class="col"><textarea rows="4" style="width: 100%;" name="comments" readonly=""></textarea></div>
                                         </div>
                                     </div>
+                                {% endfor %}
+                                
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    {% comment %} <div class="row">
                         <div class="col-12">
                             <div class="card shadow">
                                 <div class="card-header py-3">
@@ -202,7 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
                     {% endfor %}
                 </div>
             </div>

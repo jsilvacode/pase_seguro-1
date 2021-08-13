@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template.loader import get_template
 from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
                     ActividadGeneralForm)
-from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante,
+from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante, AntecedentesAcademicos,
                      ActividadGeneral)
 import  datetime 
 from xhtml2pdf import pisa
@@ -23,10 +23,20 @@ def check(request):
 
 def check_form(request):
     try:
+        antecedentes=[]
+        lista_permisos=[]
+        personal_fields = []
+        hoy = datetime.date.today()
         if request.POST:
             a=request.POST['rut']
-            personal_fields = AntecedentesPersonales.objects.filter(rut=a)
-            return render(request, "safepass/check_form.html", {'personal_fields': personal_fields})
+            permisos = Estudiante.objects.filter(antecedente_personal__rut=a)
+            for permiso in permisos:
+                if permiso.actividad_academica.fecha == hoy :
+                    lista_permisos.append(permiso)
+            for n in lista_permisos:
+                personal_fields.append(AntecedentesPersonales.objects.get(id=n.antecedente_personal_id))
+                antecedentes.append(AntecedentesAcademicos.objects.get(id=n.antecedente_academico_id))
+            return render(request, "safepass/check_form.html", {'personal_fields': personal_fields, 'antecedentes': antecedentes})
     except AntecedentesPersonales.DoesNotExist:
         raise Http404("Estudiante no registrado")
     return render(request, "safepass/check_form.html")# {'personal_fields': personal_fields})
@@ -80,12 +90,15 @@ def eventos():
 def students_form(request):
     
     events_forty_eigth = eventos()
-
+    
     a =  request.POST.get('contacto_estrecho')
-    if a == "si":
+    if a == "sí":
         return render(request, "safepass/exit.html")
     
     if request.method == "POST":
+        a = request.POST.get('declaracion_confirmar')
+        if a is None:
+            return render(request, "safepass/exit.html")
         if busqueda_sintomas_cardinales(request):
             return render(request, "safepass/exit.html")
         if busqueda_sintomas_no_cardinales(request):
@@ -138,10 +151,13 @@ def students_form(request):
 def visitors_form(request):
 
     a =  request.POST.get('contacto_estrecho')
-    if a == "si":
+    if a == "sí":
         return render(request, "safepass/exit.html")
     
     if request.method == "POST":
+        a = request.POST.get('declaracion_confirmar')
+        if a is None:
+            return render(request, "safepass/exit.html")
         if busqueda_sintomas_cardinales(request):
             return render(request, "safepass/exit.html")
         if busqueda_sintomas_no_cardinales(request):
