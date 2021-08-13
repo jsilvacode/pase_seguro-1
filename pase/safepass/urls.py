@@ -9,5 +9,6 @@ urlpatterns = [
     path('students/', views.students_form, name="students"),
     # path('students/<int:pk>/', views.students_form, name="students"),
     path('visitors/', views.visitors_form, name="visitors"),
-    path('pdf/', views.render_pdf_view, name="permission-pdf"),
+    #path('pdf/', views.render_pdf_view, name="permission-pdf"),
+    path('in-out/', views.descarga_tu_pdf, name="descarga"),
 ]

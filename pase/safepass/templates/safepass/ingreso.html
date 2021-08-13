@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Verificación{% endblock %}
+{% block content %}
+
+<div class="text-center">
+    <h1 class="text-dark">Ingresa tu RUT</h1>
+</div>
+{% csrf_token %}
+<form action="" method="post">
+    {% csrf_token %}
+    <input id="your_name" type="text" name="Ingrese su rut " value="">
+    <input type="submit" value="OK">
+</form>
+{% endblock content %}

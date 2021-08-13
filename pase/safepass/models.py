@@ -200,3 +200,16 @@ class Visita(models.Model):
     class Meta:
         verbose_name = "Visita"
         verbose_name_plural = "Visitas"
+
+
+class Register_in_out(models.Model):
+    rut_visita = models.CharField(max_length=30, verbose_name="RUT")
+    fecha = models.DateField()
+    hora = models.TimeField(verbose_name="hora")
+
+    def __str__(self):
+        self.rut_visita
+
+    class Meta:
+        verbose_name = 'Register_in_out'
+        verbose_name_plural = 'Register_in_outs'

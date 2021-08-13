@@ -1,5 +1,5 @@
 from django import forms
-from .models import (AntecedentesPersonales, AntecedentesAcademicos, 
+from .models import (AntecedentesPersonales, AntecedentesAcademicos, Register_in_out, 
                      AntecedentesSanitarios, ActividadGeneral, ActividadAcademica)
 
 
@@ -152,3 +152,18 @@ class EventosForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(forms.Form, self).__init__(*args, **kwargs)
         self.fields['eventos'].choices = [ l.hora_inicio for l in ActividadAcademica.objects.all()] """
+
+
+class Register(forms.ModelForm):
+    class Meta:
+        model = Register_in_out
+        fields = [
+                'rut_visita',
+                'fecha',
+                'hora',
+                ]
+        widgets = {
+            'rut_visita': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha': forms.TextInput(attrs={'class': 'form-control'}),
+            'hora': forms.TextInput(attrs={'class': 'form-control',}),
+        }

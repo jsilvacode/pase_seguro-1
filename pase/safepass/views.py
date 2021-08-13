@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import get_template
 from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
-                    ActividadGeneralForm)
+                    ActividadGeneralForm, Register_in_out)
 from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante, AntecedentesAcademicos,
                      ActividadGeneral)
 import  datetime 
@@ -215,33 +215,34 @@ def link_callback(uri, rel):
 
     return path
 
-def render_pdf_view(request, *args, **kwargs):
-    permission = get_object_or_404(AntecedentesPersonales, pk=kwargs.get('pk'))
-    context = {'permission': permission}
-    #permission = get_object_or_404(StatementOfConditions, pk=kwargs.get('pk'))
-    #if Visita.objects.get(id=id):
-    #    permission = Visita.objects.get(id=id)
-    #if Estudiante.objects.get(id=id):
-    #    permission = Estudiante.objects.get(id=id)
-    #context = {'permission': permission}
+def descarga_tu_pdf(request):
+    
+    if request.method == "POST":
+        rut = request.POST.get('Ingrese su rut')
+        permission= Estudiante.objects.last()
+        #permission = get_object_or_404(AntecedentesPersonales, pk=kwargs.get('pk'))
+        context = {'permission': permission}
 
-    template_path = 'safepass/permission_pdf_template.html'
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='application/pdf')
+        template_path = 'safepass/permission.html'
+        # Create a Django response object, and specify content_type as pdf
+        response = HttpResponse(content_type='application/pdf')
 
-    # download
-    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+        # download
+        # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
 
-    # display
-    response['Content-Disposition'] = 'filename="permission.pdf"'
+        # display
+        response['Content-Disposition'] = 'filename="permission.pdf"'
 
-    # find the template and render it.
-    template = get_template(template_path)
-    html = template.render(context)
+        # find the template and render it.
+        template = get_template(template_path)
+        html = template.render(context)
 
-    # create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
-    # if error then show some funy view
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
+        # create a pdf
+        pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+        # if error then show some funy view
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
+
+    register_form = Register_in_out()
+    return render(request, "safepass/ingreso.html", {"register_form":register_form})
