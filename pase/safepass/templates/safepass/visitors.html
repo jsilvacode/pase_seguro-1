@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}Formulario estudiantes{% endblock %} 
+{% block title %}Formulario Visitantes{% endblock %} 
 
 {% block content %}
 {% load crispy_forms_tags %}
@@ -176,7 +176,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-row mb-3">
+                                                {% comment %} <div class="form-row mb-3">
                                                     <div class="col-12">
                                                         <a target="_blank" href="#">Plantilla de documento</a><br>
                                                         <a target="_blank" href="#"></a>
@@ -185,10 +185,10 @@
                                                             {{ statement_form.declaracion_archivo|as_crispy_field }}
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>{% endcomment %}
                                                 <div class="form-row text-right mb-3">
                                                     <div class="col"><button class="btn btn-primary text-white btn-user" type="submit">Enviar</button></div>
-                                                </div>
+                                                </div> 
                                             </div>
                                         </div>
                                     </div>

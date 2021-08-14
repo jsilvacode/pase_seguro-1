@@ -33,24 +33,40 @@ def register_in_out(request):
         return False
 
 
+def search_with_rut(id):
+
+    antecedentes, lista_permisos, personal_fields = [], [], []
+    if Estudiante.objects.filter(antecedente_personal__rut=id).exists():
+        permisos = Estudiante.objects.filter(antecedente_personal__rut=id)
+        for permiso in permisos:
+            if permiso.actividad_academica.fecha == datetime.date.today() :
+                lista_permisos.append(permiso)
+        for n in lista_permisos:
+            personal_fields.append(AntecedentesPersonales.objects.get(id=n.antecedente_personal_id))
+            antecedentes.append(AntecedentesAcademicos.objects.get(id=n.antecedente_academico_id))
+        return personal_fields, antecedentes
+    else:
+        if Visita.objects.filter(antecedente_personal__rut=id).exists():
+            permisos = Visita.objects.filter(antecedente_personal__rut=id)
+            for permiso in permisos:
+                if permiso.actividad_general.fecha == datetime.date.today() :
+                    lista_permisos.append(permiso)
+            for n in lista_permisos:
+                personal_fields.append(AntecedentesPersonales.objects.get(id=n.antecedente_personal_id))
+            return personal_fields, antecedentes
+        else:
+            return {}, {} 
+    
+
 def check_form(request):
     try:
-        antecedentes, lista_permisos, personal_fields = [], [], []
-        hoy = datetime.date.today()
         if request.POST:
             if request.POST.get('rut'):
                 a = request.POST['rut']
-                permisos = Estudiante.objects.filter(antecedente_personal__rut=a)
-                for permiso in permisos:
-                    if permiso.actividad_academica.fecha == hoy :
-                        lista_permisos.append(permiso)
-                for n in lista_permisos:
-                    personal_fields.append(AntecedentesPersonales.objects.get(id=n.antecedente_personal_id))
-                    antecedentes.append(AntecedentesAcademicos.objects.get(id=n.antecedente_academico_id))
-                register_in_out(request)
+                personal_fields, antecedentes = search_with_rut(a)
+                if request.POST.get('ingreso') or request.POST.get('egreso'):
+                    register_in_out(request)
                 return render(request, "safepass/check_form.html", {'personal_fields': personal_fields, 'antecedentes': antecedentes})
-            else:
-                algo=""
     except AntecedentesPersonales.DoesNotExist:
         raise Http404("Estudiante no registrado")
     return render(request, "safepass/check_form.html")
@@ -240,9 +256,12 @@ def descarga_tu_pdf(request):
         rut = request.POST.get('Ingrese su rut')
         if Estudiante.objects.filter(antecedente_personal__rut=rut):
             permission = Estudiante.objects.filter(antecedente_personal__rut=rut).last()
+            activitys = Estudiante.objects.filter(antecedente_personal__rut=rut)
         if Visita.objects.filter(antecedente_personal__rut=rut):
-            permission = Estudiante.objects.filter(antecedente_personal__rut=rut).last()
-        context = {'permission': permission}
+            permission = Visita.objects.filter(antecedente_personal__rut=rut).last()
+            activitys = Estudiante.objects.filter(antecedente_personal__rut=rut)
+        
+        context = {'permission': permission, 'activitys': activitys}
 
         template_path = 'safepass/permission.html'
         # Create a Django response object, and specify content_type as pdf

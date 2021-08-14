@@ -55,13 +55,13 @@
                 <td>{{ permission.antecedente_personal.telefono }}</td>
             </tr>
             {% endif %}
-            {% comment %} <tr>
+            <tr>
                 <td>Facultad</td>
-                <td>{{ permission.faculty }}</td>
+                <td>{{ permission.antecedente_academico.facultad }}</td>
             </tr>
             <tr>
                 <td>Carrera</td>
-                <td>{{ permission.career }}</td>
+                <td>{{ permission.antecedente_academico.carrera }}</td>
             </tr> 
             {% if permission.activity_description %}
             <tr>
@@ -75,7 +75,7 @@
                 <td>{{ permission.comments }}</td>
             </tr>
             {% endif %}
-            <tr>
+            {% comment %} <tr>
                 <td>Jornada</td>
                 <td>
                     {% if permission.activities_time == 'morning' %}
@@ -84,17 +84,17 @@
                         Tarde (permiso desde las 14:10)
                     {% endif %}
                 </td>
-            </tr>
+            </tr> {% endcomment %}
             <tr>
                 <td>Actividades</td>
                 <td>
-                    {% for activity in permission.activities_reference.all %}
-                        {% if activity.course %}"{{ activity.course }}"{% endif %} {{ activity.name }} de {{ activity.date_time | time }} a {{ activity.ending_time | time }} horas en sala {{ activity.class_room }}
+                    {% for activity in activitys %}
+                        {% if activity.actividad_academica %}"{{ activity.actividad_academica.asignatura }}"{% endif %}
+                            {{ activity.actividad_academica.asignatura }} de {{ activity.actividad_academica.hora_inicio | time }} a {{ activity.actividad_academica.hora_fin | time }} horas en sala {{ activity.actividad_academica.aula }}
                         <br>
                     {% endfor %}
-
                 </td>
-            </tr>{% endcomment %}
+            </tr>
         </tbody>
     </table>
     <div id="footer" class="center">
