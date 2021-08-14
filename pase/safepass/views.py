@@ -1,45 +1,60 @@
 from django.conf import settings
 from django.http.response import Http404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, request
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import get_template
-from .forms import (PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
+from .forms import ( PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
                     ActividadGeneralForm, Register_in_out)
-from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante, AntecedentesAcademicos,
-                     ActividadGeneral)
+from .models import ( AntecedentesPersonales, ActividadAcademica, Visita, Estudiante, AntecedentesAcademicos,
+                     ActividadGeneral, Register_in_out)
 import  datetime 
 from xhtml2pdf import pisa
 
+
 def check(request):
-    algo = ""
     return render(request, "safepass/check.html")
 
 
-""" def check_form(request):
-    algo = ""
-    return render(request, "safepass/check_form.html") """
+def register_in_out(request):
+    try:
+        ingreso = request.POST.get('ingreso')
+        egreso = request.POST.get('egreso')
+        rut = request.POST.get('rut')
 
+        movimiento = "ingreso" if ingreso is not None else "egreso"
+
+        register = Register_in_out.objects.create(
+            rut=rut,
+            tipo_de_movimiento=movimiento
+        )
+        register.save()
+        return True 
+    except:
+        return False
 
 
 def check_form(request):
     try:
-        antecedentes=[]
-        lista_permisos=[]
-        personal_fields = []
+        antecedentes, lista_permisos, personal_fields = [], [], []
         hoy = datetime.date.today()
         if request.POST:
-            a=request.POST['rut']
-            permisos = Estudiante.objects.filter(antecedente_personal__rut=a)
-            for permiso in permisos:
-                if permiso.actividad_academica.fecha == hoy :
-                    lista_permisos.append(permiso)
-            for n in lista_permisos:
-                personal_fields.append(AntecedentesPersonales.objects.get(id=n.antecedente_personal_id))
-                antecedentes.append(AntecedentesAcademicos.objects.get(id=n.antecedente_academico_id))
-            return render(request, "safepass/check_form.html", {'personal_fields': personal_fields, 'antecedentes': antecedentes})
+            if request.POST.get('rut'):
+                a = request.POST['rut']
+                permisos = Estudiante.objects.filter(antecedente_personal__rut=a)
+                for permiso in permisos:
+                    if permiso.actividad_academica.fecha == hoy :
+                        lista_permisos.append(permiso)
+                for n in lista_permisos:
+                    personal_fields.append(AntecedentesPersonales.objects.get(id=n.antecedente_personal_id))
+                    antecedentes.append(AntecedentesAcademicos.objects.get(id=n.antecedente_academico_id))
+                register_in_out(request)
+                return render(request, "safepass/check_form.html", {'personal_fields': personal_fields, 'antecedentes': antecedentes})
+            else:
+                algo=""
     except AntecedentesPersonales.DoesNotExist:
         raise Http404("Estudiante no registrado")
-    return render(request, "safepass/check_form.html")# {'personal_fields': personal_fields})
+    return render(request, "safepass/check_form.html")
+
 
 def busqueda_sintomas_no_cardinales(request):
 
@@ -57,6 +72,7 @@ def busqueda_sintomas_no_cardinales(request):
         return False 
     else:
         return True
+
 
 def busqueda_sintomas_cardinales(request):
 
@@ -197,6 +213,7 @@ def visitors_form(request):
         'activity_general': activity_general,# 'activities_forty_eigth': activities_forty_eigth
     })
 
+
 def link_callback(uri, rel):
     """
     Convert HTML URIs to absolute system paths so xhtml2pdf can access those
@@ -214,6 +231,7 @@ def link_callback(uri, rel):
         return uri
 
     return path
+
 
 def descarga_tu_pdf(request):
     

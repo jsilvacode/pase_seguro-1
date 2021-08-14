@@ -130,19 +130,20 @@ class EventosForm(forms.ModelForm):
                   'facultad',
                   'carrera'] """
 
-""" class ActividadAcademicaForm(forms.Form):
+class ActividadAcademicaForm(forms.Form):
     eventos = forms.ModelMultipleChoiceField(queryset=None)
     widgets = {
             'eventos': forms.TextInput(
                 attrs={'class': 'form-control'}),
         }
+    class Meta:
+        model = AntecedentesAcademicos
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.fields['eventos'].queryset = ActividadAcademica.objects.all()
+        super().__init__(*args, **kwargs)
     
-    class Meta:
-        model = AntecedentesAcademicos  """
+     
 
 
 """ class ActividadAcademicaForm(forms.Form): 
@@ -158,7 +159,7 @@ class Register(forms.ModelForm):
     class Meta:
         model = Register_in_out
         fields = [
-                'rut_visita',
+                'rut',
                 'fecha',
                 'hora',
                 ]

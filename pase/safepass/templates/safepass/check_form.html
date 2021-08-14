@@ -31,9 +31,10 @@
                                         * El rut no registra permisos
                                     </small> {% endcomment %}
                                     <button class="btn btn-primary btn-block text-white btn-user" type="submit">Revisar</button>
-                                    <a class="btn btn-info btn-block btn-user" href="#">Marcar salida</a>
+                                    <input  class="btn btn-primary btn-block text-white btn-user" type="submit" name="ingreso" value="Revisar y marcar ingreso" />
+                                    <input  class="btn btn-primary btn-block text-white btn-user" type="submit" name="egreso" value="Revisar y marcar egreso" />
                                 </form>
-                                <div class="alert alert-danger" style="margin-top: 15px;" role="alert">
+                                {% comment %} <div class="alert alert-danger" style="margin-top: 15px;" role="alert">
                                         Salida marcada con anterioridad
                                     <br><br>
                                 </div>
@@ -42,7 +43,7 @@
                                     <br>
                                         Aceptación de terminos encontrada<br>valida para el {{ object.activity_starting_time|date:"d \d\e F \d\e\l Y" }} desde las {{ object.activity_starting_time|date:"H:i" }} hasta las {{ object.activity_ending_time|date:"H:i" }} hrs
                                     <br><br>
-                                </a>
+                                </a> {% endcomment %}
                                 <div class="d-flex justify-content-center mt-3"><img class="img-thumbnail img-fluid" src="{{ MEDIA_URL }}{{ object.qr_code.url }}" style="max-width: 150px;max-height: 150px;"></div>
                             </div>
                         </div>

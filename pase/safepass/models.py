@@ -1,9 +1,10 @@
-from django.db import models
 from django.core.files import File
+from django.db import models
+from django.db.models.deletion import CASCADE
+from django.utils.timezone import now
 from PIL import Image, ImageDraw
 import qrcode
 from io import BytesIO
-from django.db.models.deletion import CASCADE
 
 
 class AntecedentesPersonales(models.Model):
@@ -203,13 +204,14 @@ class Visita(models.Model):
 
 
 class Register_in_out(models.Model):
-    rut_visita = models.CharField(max_length=30, verbose_name="RUT")
-    fecha = models.DateField()
-    hora = models.TimeField(verbose_name="hora")
+    rut = models.CharField(max_length=30, verbose_name="RUT")
+    tipo_de_movimiento = models.CharField(max_length=30, verbose_name="tipo de movimiento")
+    fecha = models.DateField(default=now)
+    hora = models.TimeField(verbose_name="hora", default=now)
 
     def __str__(self):
-        self.rut_visita
+        return self.rut
 
     class Meta:
-        verbose_name = 'Register_in_out'
-        verbose_name_plural = 'Register_in_outs'
+        verbose_name = 'Registro entradas y salidas'
+        verbose_name_plural = 'Registro entradas y salidas'
