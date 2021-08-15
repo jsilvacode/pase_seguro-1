@@ -118,7 +118,6 @@ def eventos():
                     lista_de_eventos.append(event)
     return lista_de_eventos
 
-
 def students_form(request):
     
     events_forty_eigth = eventos()
@@ -152,8 +151,10 @@ def students_form(request):
                 data3 = statement_form.save(commit=False)
                 data3.save()
     if request.method == "POST":
-        id = request.POST['name']
-        data4 = ActividadAcademica.objects.get(id=int(id))
+        check = request.POST.getlist('name[]')
+        for index in check:
+            data4 = ActividadAcademica.objects.get(id=index)
+            data4.save()
 
     if  request.method=="POST":
         a = Estudiante.objects.create(
@@ -176,7 +177,7 @@ def students_form(request):
     return render(request, "safepass/students.html", {
         'profile_form': profile_form, 'education_form': education_form, 
         'statement_form': statement_form, 'events_form': events_form, 
-        'events_forty_eigth': events_forty_eigth
+        'events_forty_eigth': events_forty_eigth,
     })
 
 

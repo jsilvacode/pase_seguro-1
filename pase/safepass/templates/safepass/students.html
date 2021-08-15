@@ -93,7 +93,7 @@
                                                                     <table class="table table-borderless">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th scope="col">Codigo</th>
+                                                                                <th scope="col"><i class="fas fa-calendar-alt"></i></th>
                                                                                 <th scope="col">Fecha</th>
                                                                                 <th scope="col">Inicio</th>
                                                                                 <th scope="col">Término</th>
@@ -107,7 +107,7 @@
                                                                         <tbody>
                                                                             {% for events in events_forty_eigth %}
                                                                                 <tr>
-                                                                                    <td>{{ events.id }}</td>
+                                                                                    <td><input type="checkbox" id="name" name="name[]" value="{{ events.id }}"></td>
                                                                                     <td>{{ events.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                                                                                     <td>{{ events.hora_inicio }}</td>
                                                                                     <td>{{ events.hora_fin }}</td>
@@ -120,11 +120,6 @@
                                                                             {% endfor %}
                                                                         </tbody>
                                                                     </table>
-                                                                    <div class="col">
-                                                                        <div class="form-group">
-                                                                            <input type="text" id="name" name="name" placeholder="Ingrese un código" required  maxlength="8" size="15">
-                                                                        </div>
-                                                                    </div>
                                                                 </div> 
                                                             </div>
                                                         </div>

@@ -63,36 +63,11 @@
                 <td>Carrera</td>
                 <td>{{ permission.antecedente_academico.carrera }}</td>
             </tr> 
-            {% if permission.activity_description %}
-            <tr>
-                <td>Descripción</td>
-                <td>{{ permission.activity_description }}</td>
-            </tr>
-            {% endif %}
-            {% if permission.comments %}
-            <tr>
-                <td>Comentarios</td>
-                <td>{{ permission.comments }}</td>
-            </tr>
-            {% endif %}
-            {% comment %} <tr>
-                <td>Jornada</td>
-                <td>
-                    {% if permission.activities_time == 'morning' %}
-                        Mañana (permiso válido hasta las 13:30)
-                    {% elif permission.activities_time == 'afternoon' %}
-                        Tarde (permiso desde las 14:10)
-                    {% endif %}
-                </td>
-            </tr> {% endcomment %}
             <tr>
                 <td>Actividades</td>
                 <td>
-                    {% for activity in activitys %}
-                        {% if activity.actividad_academica %}"{{ activity.actividad_academica.asignatura }}"{% endif %}
-                            {{ activity.actividad_academica.asignatura }} de {{ activity.actividad_academica.hora_inicio | time }} a {{ activity.actividad_academica.hora_fin | time }} horas en sala {{ activity.actividad_academica.aula }}
-                        <br>
-                    {% endfor %}
+                    {{ permission.actividad_academica.asignatura }} de {{ permission.actividad_academica.hora_inicio | time }} a {{ permission.actividad_academica.hora_fin | time }} horas en sala {{ activity.actividad_academica.aula }}
+                    <br>
                 </td>
             </tr>
         </tbody>
