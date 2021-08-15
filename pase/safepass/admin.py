@@ -3,7 +3,7 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from .models import ( AntecedentesAcademicos, ActividadAcademica,
                      ActividadGeneral, AntecedentesPersonales, AntecedentesSanitarios,
-                     Estudiante, Visita, Register_in_out
+                     Estudiante, Visita, Register_in_out, Carrera, Facultad
                     )
 
 
@@ -23,3 +23,5 @@ admin.site.register(AntecedentesSanitarios)
 admin.site.register(Estudiante)
 admin.site.register(Register_in_out)
 admin.site.register(Visita)
+admin.site.register(Carrera)
+admin.site.register(Facultad)

@@ -1,6 +1,6 @@
 from django import forms
-from .models import (AntecedentesPersonales, AntecedentesAcademicos, Register_in_out, 
-                     AntecedentesSanitarios, ActividadGeneral, ActividadAcademica)
+from .models import (AntecedentesPersonales, AntecedentesAcademicos, Register_in_out,
+                     AntecedentesSanitarios, ActividadGeneral, ActividadAcademica, Carrera)
 
 
 class PerfilForm(forms.ModelForm):
@@ -24,6 +24,10 @@ class EducacionForm(forms.ModelForm):
     class Meta:
         model = AntecedentesAcademicos
         fields = ['facultad', 'carrera']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['carrera'].queryset = Carrera.objects.all()
 
 
 class DeclaracionForm(forms.ModelForm):

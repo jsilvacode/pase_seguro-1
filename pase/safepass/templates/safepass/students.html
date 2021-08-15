@@ -232,4 +232,30 @@
         </footer>
     </div>
 </div>
+    <script src="{% static 'core/js/jquery-3.6.0.min.js' %}"></script>
+    <script type="application/javascript">
+ $(document).ready(function() {
+     facultades = $("select[id='id_facultad']").children()
+     facultades.on('click', (e) => {
+         carreras = $("select[id='id_carrera']").children()
+         if (e.currentTarget.value == 1) {
+
+         }
+         if (e.currentTarget.value == 2) {
+             console.log('entro a teologia')
+              carreras.each(function(a) {
+                if (a != 10) {
+                    carreras[a].hidden = true
+                }
+            })
+         }
+         if (e.currentTarget.value == 3) {
+
+         }
+         if (e.currentTarget.value == 4) {
+
+         }
+     })
+ })
+    </script>
 {% endblock %}

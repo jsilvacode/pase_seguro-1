@@ -22,19 +22,25 @@ class AntecedentesPersonales(models.Model):
         verbose_name_plural = "Antecedentes Personales"
 
 
+class Carrera(models.Model):
+    name = models.CharField(max_length=150, verbose_name="nombre")
+
+    def __str__(self):
+        return self.name
+
+
+class Facultad(models.Model):
+    name = models.CharField(max_length=150, verbose_name="nombre")
+    carreras = models.ForeignKey(Carrera, null=True, blank=True, on_delete=models.CASCADE, verbose_name="carrera")
+    iniciales = models.CharField(max_length=20, verbose_name="iniciales")
+
+    def __str__(self):
+        return self.name
+
+
 class AntecedentesAcademicos(models.Model):
-    FACS = 'Facultad de Ciencias de la Salud'
-    FECS = 'Facultad de Educación y Ciencias Sociales'
-    FAIN = 'Facultad de Ingeniería y Negocios'
-    FTEO = 'Facultad de Teología'
-    FACULTADES = [
-        (FACS, 'FACS'),
-        (FECS, 'FECS'),
-        (FAIN, 'FAIN'),
-        (FTEO, 'FTEO'),
-    ]
-    facultad = models.CharField(max_length=100, choices=FACULTADES)
-    carrera = models.CharField(max_length=100)
+    facultad = models.ForeignKey(Facultad, null=False, blank=False, on_delete=models.CASCADE, verbose_name="facultad")
+    carrera = models.ForeignKey(Carrera, null=False, blank=False, on_delete=models.CASCADE, verbose_name="carrera")
 
     def __str__(self):
         return '{} - {}'.format(self.facultad, self.carrera)
