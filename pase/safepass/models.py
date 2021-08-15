@@ -23,7 +23,17 @@ class AntecedentesPersonales(models.Model):
 
 
 class AntecedentesAcademicos(models.Model):
-    facultad = models.CharField(max_length=100)
+    FACS = 'Facultad de Ciencias de la Salud'
+    FECS = 'Facultad de Educación y Ciencias Sociales'
+    FAIN = 'Facultad de Ingeniería y Negocios'
+    FTEO = 'Facultad de Teología'
+    FACULTADES = [
+        (FACS, 'FACS'),
+        (FECS, 'FECS'),
+        (FAIN, 'FAIN'),
+        (FTEO, 'FTEO'),
+    ]
+    facultad = models.CharField(max_length=100, choices=FACULTADES)
     carrera = models.CharField(max_length=100)
 
     def __str__(self):

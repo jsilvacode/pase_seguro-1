@@ -23,14 +23,7 @@ class PerfilForm(forms.ModelForm):
 class EducacionForm(forms.ModelForm):
     class Meta:
         model = AntecedentesAcademicos
-        fields = ['facultad', 
-                  'carrera']
-        widgets = {
-            'facultad': forms.TextInput(
-                attrs={'class': 'form-control'}),
-            'carrera': forms.TextInput(
-                attrs={'class': 'form-control'}),
-        }
+        fields = ['facultad', 'carrera']
 
 
 class DeclaracionForm(forms.ModelForm):

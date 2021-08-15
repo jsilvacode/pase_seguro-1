@@ -91,21 +91,16 @@ def busqueda_sintomas_no_cardinales(request):
 
 
 def busqueda_sintomas_cardinales(request):
-
     lista_de_sintomas = ['sintoma_fiebre','sintoma_perdida_olfato', 'sintoma_perdida_gusto']
     lista = []
     for x in lista_de_sintomas:
         a = request.POST.get(x)
         if a:
             lista.append(a)
-    if len(lista) >= 1:
-        return True 
-    else:
-        return False
+    return True if len(lista) >= 1 else False
 
 
 def eventos():
-
     lista_de_eventos = []
     hoy = datetime.date.today()
     pasado = datetime.date.today() + datetime.timedelta(days=2)
@@ -118,71 +113,67 @@ def eventos():
                     lista_de_eventos.append(event)
     return lista_de_eventos
 
+
 def students_form(request):
-    
+    EXIT_PAGE = "safepass/exit.html"
     events_forty_eigth = eventos()
-    
-    a =  request.POST.get('contacto_estrecho')
-    if a == "sí":
-        return render(request, "safepass/exit.html")
-    
-    if request.method == "POST":
-        a = request.POST.get('declaracion_confirmar')
-        if a is None:
-            return render(request, "safepass/exit.html")
-        if busqueda_sintomas_cardinales(request):
-            return render(request, "safepass/exit.html")
-        if busqueda_sintomas_no_cardinales(request):
-            return render(request, "safepass/exit.html")
+
+    if request.method == 'GET':
+        profile_form = PerfilForm()
+        education_form = EducacionForm()
+        statement_form = DeclaracionForm()
+        events_form = EventosForm()
+
+        return render(request, "safepass/students.html", {
+            'profile_form': profile_form, 'education_form': education_form,
+            'statement_form': statement_form, 'events_form': events_form,
+            'events_forty_eigth': events_forty_eigth,
+        })
 
     if request.method == "POST":
+        contacto_estrecho = request.POST.get('contacto_estrecho')
+        if contacto_estrecho == "sí":
+            return render(request, EXIT_PAGE)
+        contacto_estrecho = request.POST.get('declaracion_confirmar')
+        if contacto_estrecho is None:
+            return render(request, EXIT_PAGE)
+        if busqueda_sintomas_cardinales(request):
+            return render(request, EXIT_PAGE)
+        if busqueda_sintomas_no_cardinales(request):
+            return render(request, EXIT_PAGE)
+
         profile_form = PerfilForm(request.POST)
         if profile_form.is_valid():
-                data1 = profile_form.save(commit=False)
-                data1.save()
-    if request.method == "POST":
+            data1 = profile_form.save(commit=False)
+            data1.save()
+
         education_form = EducacionForm(request.POST)
         if education_form.is_valid():
-                data2 = education_form.save(commit=False)
-                data2.save()
-    if request.method == "POST":
+            data2 = education_form.save(commit=False)
+            data2.save()
+
         statement_form = DeclaracionForm(request.POST, request.FILES)
         if profile_form.is_valid():
-                data3 = statement_form.save(commit=False)
-                data3.save()
-    if request.method == "POST":
+            data3 = statement_form.save(commit=False)
+            data3.save()
+
         check = request.POST.getlist('name[]')
         for index in check:
             data4 = ActividadAcademica.objects.get(id=index)
             data4.save()
 
-    if  request.method=="POST":
-        a = Estudiante.objects.create(
+        nuevo_estudiante = Estudiante.objects.create(
             antecedente_personal=data1,
             antecedente_academico=data2,
             actividad_academica=data4,
             antecedente_sanitario=data3
             )
-        a.save()
-        permission = a
-        #pk = int(a.id)
-        #render_pdf_view(request, pk)
-        return render(request, "safepass/permission.html", {'permission': permission})
-    
-    profile_form = PerfilForm()
-    education_form = EducacionForm()
-    statement_form = DeclaracionForm()
-    events_form = EventosForm()
-    # ----
-    return render(request, "safepass/students.html", {
-        'profile_form': profile_form, 'education_form': education_form, 
-        'statement_form': statement_form, 'events_form': events_form, 
-        'events_forty_eigth': events_forty_eigth,
-    })
+        nuevo_estudiante.save()
+
+        return render(request, "safepass/permission.html", {'permission': nuevo_estudiante})
 
 
 def visitors_form(request):
-
     a =  request.POST.get('contacto_estrecho')
     if a == "sí":
         return render(request, "safepass/exit.html")
