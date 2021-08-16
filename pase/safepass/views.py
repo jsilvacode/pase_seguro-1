@@ -1,12 +1,15 @@
 from django.conf import settings
-from django.http.response import Http404
+from django.contrib.postgres import serializers
+from django.http.response import Http404, JsonResponse, HttpResponseNotFound
 from django.http import HttpResponseRedirect, HttpResponse, request
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import get_template
+from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 from .forms import ( PerfilForm, EducacionForm, DeclaracionForm, EventosForm,
                     ActividadGeneralForm, Register_in_out)
-from .models import ( AntecedentesPersonales, ActividadAcademica, Visita, Estudiante, AntecedentesAcademicos,
-                     ActividadGeneral, Register_in_out)
+from .models import (AntecedentesPersonales, ActividadAcademica, Visita, Estudiante, AntecedentesAcademicos,
+                     ActividadGeneral, Register_in_out, Facultad)
 import  datetime 
 from xhtml2pdf import pisa
 
@@ -278,3 +281,20 @@ def descarga_tu_pdf(request):
 
     register_form = Register_in_out()
     return render(request, "safepass/ingreso.html", {"register_form":register_form})
+
+
+@csrf_exempt
+def eventos_programados(request):
+    if request.method == "POST":
+        data = serializers.serialize("json", Facultad.objects.all(), ensure_ascii=False)
+        return JsonResponse(data, safe=False)
+    return HttpResponseNotFound()
+
+
+@csrf_exempt
+def carreras(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        data = serializers.serialize("json", Facultad.objects.get(name=name).carrera_set.all(), ensure_ascii=False)
+        return JsonResponse(data, safe=False)
+    return HttpResponseNotFound()

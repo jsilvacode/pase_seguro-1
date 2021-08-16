@@ -15,6 +15,7 @@ class ActividadAcademicaResource(resources.ModelResource):
 class ActividadAcademicaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = ActividadAcademicaResource
 
+
 admin.site.register(AntecedentesAcademicos)
 admin.site.register(ActividadAcademica, ActividadAcademicaAdmin)
 admin.site.register(ActividadGeneral)

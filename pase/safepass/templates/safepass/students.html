@@ -236,25 +236,17 @@
     <script type="application/javascript">
  $(document).ready(function() {
      facultades = $("select[id='id_facultad']").children()
+
      facultades.on('click', (e) => {
-         carreras = $("select[id='id_carrera']").children()
-         if (e.currentTarget.value == 1) {
-
-         }
-         if (e.currentTarget.value == 2) {
-             console.log('entro a teologia')
-              carreras.each(function(a) {
-                if (a != 10) {
-                    carreras[a].hidden = true
-                }
-            })
-         }
-         if (e.currentTarget.value == 3) {
-
-         }
-         if (e.currentTarget.value == 4) {
-
-         }
+         carreras = $("select[id='id_carrera']").children().remove()
+         $.post("/safepass/carreras/", { name: e.currentTarget.text})
+          .done(function( data ) {
+              careers = JSON.parse(data)
+              console.log(careers)
+              careers.forEach((e) => {
+                  $("select[id='id_carrera']").append(`<option value="${e.fields.name}">${e.fields.name}</option>`);
+              })
+          });
      })
  })
     </script>

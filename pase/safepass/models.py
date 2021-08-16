@@ -21,18 +21,33 @@ class AntecedentesPersonales(models.Model):
         verbose_name = "Antecedente Personal"
         verbose_name_plural = "Antecedentes Personales"
 
+"""
+class ScheduledEvent(models.Model):
+    date = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    course = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE, verbose_name="asignatura")
+    university = models.ForeignKey(Facultad, null=True, blank=True, on_delete=models.CASCADE, verbose_name="facultad")
+    career = models.ForeignKey(Career, null=True, blank=True, on_delete=models.CASCADE, verbose_name="carrera")
+    classroom = models.ForeignKey(ClassRoom, null=True, blank=True, on_delete=models.CASCADE, verbose_name="aula")
+    teacher = models.ForeignKey(Teacher, null=True, blank=True, on_delete=models.CASCADE, verbose_name="docente")
 
-class Carrera(models.Model):
+    def __str__(self):
+        return self.teacher
+"""
+
+
+class Facultad(models.Model):
     name = models.CharField(max_length=150, verbose_name="nombre")
+    iniciales = models.CharField(max_length=20, verbose_name="iniciales")
 
     def __str__(self):
         return self.name
 
 
-class Facultad(models.Model):
+class Carrera(models.Model):
     name = models.CharField(max_length=150, verbose_name="nombre")
-    carreras = models.ForeignKey(Carrera, null=True, blank=True, on_delete=models.CASCADE, verbose_name="carrera")
-    iniciales = models.CharField(max_length=20, verbose_name="iniciales")
+    facultad = models.ForeignKey(Facultad, null=True, blank=True, on_delete=models.CASCADE, verbose_name="carrera")
 
     def __str__(self):
         return self.name
